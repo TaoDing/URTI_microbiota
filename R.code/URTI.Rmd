@@ -26,8 +26,8 @@ library(microbiome)
 suppressWarnings(suppressMessages(library(amplicon)))
 ```
 
+
 ## make phyloseq of 16S
-## 16s分析
 
 ```{r}
 setwd("C:/Users/DELL/Desktop/URTI.16SV4.202110/qiime2out")
@@ -70,7 +70,7 @@ physeq.rp <- prune_taxa(taxa_sums(physeq.r) > 0, physeq.r)
 ```
 
 
-# 物种组成
+## microbial composition
 
 ```{r}
 # phylum水平
@@ -122,7 +122,9 @@ pheatmap(otus2, annotation_col = annotation_col, annotation_row = annotation_row
 
 ```
 
-## alpha多样性
+
+
+## alpha diversity
 
 ```{r}
 #load('physeq.rp.Rdata')
@@ -133,7 +135,7 @@ col5<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
 s.sh <- plot_richness(physeq.rp, "group",  measures=NULL)
 s.data <- s.sh$data
 
-s.data1 <- subset(s.data, group != "NA" & variable %in% c("Observed"))
+s.data1 <- subset(s.data, group != "NA" & variable %in% c("Shannon"))
 s.data1$group1 <- factor(s.data1$group1,levels=c("infection", "control"))
 
 my_comparisons2 <- list(c("infection", "control"))
@@ -170,7 +172,7 @@ pa2 <- ggplot(data=s.data1, aes(x = group2, y = value, group=group2)) +
     theme(legend.position='none')+
     theme(plot.title = element_text(hjust = 0.5))
 
-sub_s.data <- subset(s.data, group %in% c("CTL", "A", "B", "S", "H") & variable %in% c("Observed"))
+sub_s.data <- subset(s.data, group %in% c("CTL", "A", "B", "S", "H") & variable %in% c("Shannon"))
 sub_s.data$group <- factor(sub_s.data$group,levels=c("A", "B", "S", "H", "CTL"))
 my_comparisons5 <- list(c("CTL", "H"), c("CTL", "S"), c("CTL", "B"), c("A", "CTL"))
 pa3 <- ggplot(data=sub_s.data, aes(x = group, y = value, group=group)) +
@@ -191,9 +193,9 @@ pa3 <- ggplot(data=sub_s.data, aes(x = group, y = value, group=group)) +
 (pa1 + pa2 + pa3 + plot_layout(nrow = 1, widths = c(2.3, 3.2, 5)))
 
 
-s.data1 <- subset(s.data, group == "A" & variable %in% c("Observed"))
+s.data1 <- subset(s.data, group == "A" & variable %in% c("Shannon"))
 
-p1<- ggplot(data=s.data1 , aes( x = value, y = log(FluA))) +
+p1<- ggplot(data=s.data1 , aes( y = value, x = log(FluA))) +
     geom_point(alpha=0.6, color="black",size=2)+ 
     geom_smooth(method=lm, size=2, color="#824533")+
     theme_bw()+
@@ -203,9 +205,9 @@ p1<- ggplot(data=s.data1 , aes( x = value, y = log(FluA))) +
     theme(legend.position="none")+
     stat_cor(method = "spearman", color="black", size=6)
 
-s.data1 <- subset(s.data, group == "B" & variable %in% c("Observed"))
+s.data1 <- subset(s.data, group == "B" & variable %in% c("Shannon"))
 
-p2<- ggplot(data=s.data1 , aes( x = value, y = log(FluB))) +
+p2<- ggplot(data=s.data1 , aes( y = value, x = log(FluB))) +
     geom_point(alpha=0.6, color="black",size=2)+ 
     geom_smooth(method=lm, size=2, color="#B79570")+
     theme_bw()+
@@ -215,9 +217,9 @@ p2<- ggplot(data=s.data1 , aes( x = value, y = log(FluB))) +
     theme(legend.position="none")+
     stat_cor(method = "spearman", color= "black", size=6)
 
-s.data1 <- subset(s.data, group == "S" & variable %in% c("Observed"))
+s.data1 <- subset(s.data, group == "S" & variable %in% c("Shannon"))
 
-p3<- ggplot(data=s.data1 , aes( x = value, y = log(RSV))) +
+p3<- ggplot(data=s.data1 , aes( y = value, x = log(RSV))) +
     geom_point(alpha=0.6, color="black",size=2)+ 
     geom_smooth(method=lm, size=2, color="#CAD09E")+
     theme_bw()+
@@ -227,9 +229,9 @@ p3<- ggplot(data=s.data1 , aes( x = value, y = log(RSV))) +
     theme(legend.position="none")+
     stat_cor(method = "spearman", color= "black", size=6)
 
-s.data1 <- subset(s.data, group == "H" & variable %in% c("Observed"))
+s.data1 <- subset(s.data, group == "H" & variable %in% c("Shannon"))
 
-p4<- ggplot(data=s.data1 , aes( x = value, y = log(RHV))) +
+p4<- ggplot(data=s.data1 , aes( y = value, x = log(RHV))) +
     geom_point(alpha=0.6, color="black",size=2)+ 
     geom_smooth(method=lm, size=2, color="#FFCCB1")+
     theme_bw()+
@@ -239,7 +241,7 @@ p4<- ggplot(data=s.data1 , aes( x = value, y = log(RHV))) +
     theme(legend.position="none")+
     stat_cor(method = "spearman", color= "black", size=6)
 
-(p1 | p2) / (p3 | p4)
+p1 | p2 | p3 | p4
 
 library(tidyverse)
 library("randomForest")
@@ -283,19 +285,53 @@ ggplot(data=otus3 , aes( y = log10(FluA), x = value/200)) +
 
 ```
 
-#beta多样性
+
+
+## beta diversity
 
 ```{r}
-col5<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
-
-#FluA
-physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "A"))
+physeq.rp5<- subset_samples(physeq.rp, BMI != "NA")
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
 GP.ord <- ordinate(physeq5, "NMDS", "bray")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
 data2 <- data1$data
 ggscatter(data2, x= "NMDS1", y = "NMDS2", 
+                color = "BMI", palette = c("black", "#aa3e35"),
+                ellipse = TRUE,  alpha=0.75,
+                mean.point = FALSE, star.plot = FALSE,  
+                ellipse.level = 0.3,  
+                ggtheme = theme_minimal(),
+                rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()
+
+meta <- as.data.frame(meta(physeq5))
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adon.results<-vegan::adonis2(dis_bray.f~ meta$BMI, perm=999)
+adon.results
+
+
+
+
+col5<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
+
+#FluA
+physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "A"))
+physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
+
+GP.ord <- ordinate(physeq5, "NMDS", "unifrac")
+data1<- plot_ordination(physeq5, GP.ord, color="group")
+data2 <- data1$data
+p1 <- ggscatter(data2, x= "NMDS1", y = "NMDS2", 
           color = "group", palette = c("#824533", "#2B6B8E"),
           ellipse = TRUE,  
           mean.point = FALSE, star.plot = FALSE,  
@@ -313,7 +349,7 @@ ggscatter(data2, x= "NMDS1", y = "NMDS2",
     theme_classic()
 
 meta <- meta(physeq5)
-dis_bray.f<- phyloseq::distance(physeq5, "bray")
+dis_bray.f<- phyloseq::distance(physeq5, "unifrac")
 set.seed(002)
 adon.results<-adonis(dis_bray.f~ meta$group, perm=999)
 knitr::kable(adon.results[["aov.tab"]])
@@ -322,10 +358,10 @@ knitr::kable(adon.results[["aov.tab"]])
 physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "B"))
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
-GP.ord <- ordinate(physeq5, "NMDS", "bray")
+GP.ord <- ordinate(physeq5, "NMDS", "unifrac")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
 data2 <- data1$data
-ggscatter(data2, x= "NMDS1", y = "NMDS2", 
+p2 <- ggscatter(data2, x= "NMDS1", y = "NMDS2", 
           color = "group", palette = c("#B79570", "#2B6B8E"),
           ellipse = TRUE,  
           mean.point = FALSE, star.plot = FALSE,  
@@ -343,7 +379,7 @@ ggscatter(data2, x= "NMDS1", y = "NMDS2",
     theme_classic()
 
 meta <- meta(physeq5)
-dis_bray.f<- phyloseq::distance(physeq5, "bray")
+dis_bray.f<- phyloseq::distance(physeq5, "unifrac")
 set.seed(002)
 adon.results<-adonis(dis_bray.f~ meta$group, perm=999)
 knitr::kable(adon.results[["aov.tab"]])
@@ -352,10 +388,10 @@ knitr::kable(adon.results[["aov.tab"]])
 physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "S"))
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
-GP.ord <- ordinate(physeq5, "NMDS", "bray")
+GP.ord <- ordinate(physeq5, "NMDS", "unifrac")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
 data2 <- data1$data
-ggscatter(data2, x= "NMDS1", y = "NMDS2", 
+p3 <- ggscatter(data2, x= "NMDS1", y = "NMDS2", 
           color = "group", palette = c("#2B6B8E", "#CAD09E"),
           ellipse = TRUE,  
           mean.point = FALSE, star.plot = FALSE,  
@@ -373,7 +409,7 @@ ggscatter(data2, x= "NMDS1", y = "NMDS2",
     theme_classic()
 
 meta <- meta(physeq5)
-dis_bray.f<- phyloseq::distance(physeq5, "bray")
+dis_bray.f<- phyloseq::distance(physeq5, "unifrac")
 set.seed(002)
 adon.results<-adonis(dis_bray.f~ meta$group, perm=999)
 knitr::kable(adon.results[["aov.tab"]])
@@ -382,10 +418,10 @@ knitr::kable(adon.results[["aov.tab"]])
 physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "H"))
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
-GP.ord <- ordinate(physeq5, "NMDS", "bray")
+GP.ord <- ordinate(physeq5, "NMDS", "unifrac")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
 data2 <- data1$data
-ggscatter(data2, x= "NMDS1", y = "NMDS2", 
+p4 <- ggscatter(data2, x= "NMDS1", y = "NMDS2", 
           color = "group", palette = c( "#2B6B8E", "#FFCCB1"),
           ellipse = TRUE,  
           mean.point = FALSE, star.plot = FALSE,  
@@ -403,14 +439,19 @@ ggscatter(data2, x= "NMDS1", y = "NMDS2",
     theme_classic()
 
 meta <- meta(physeq5)
-dis_bray.f<- phyloseq::distance(physeq5, "bray")
+dis_bray.f<- phyloseq::distance(physeq5, "unifrac")
 set.seed(002)
 adon.results<-adonis(dis_bray.f~ meta$group, perm=999)
 knitr::kable(adon.results[["aov.tab"]])
 
+p1 | p2 | p3 | p4
+
 ```
 
-# lefse + 物种箱线图
+
+
+## lefse
+
 ```{r}
 physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "A", "B", "S", "H"))
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
@@ -483,7 +524,8 @@ ggplot(data=otus1, aes(x = group, y = 100*g__Veillonella, group=group)) +
 
 ```
 
-#预测模型
+
+## RF model
 
 ```{r}
 library(pROC) 
@@ -495,69 +537,96 @@ physeq.rpa<- subset_samples(physeq.rp, group %in% c("A", "B", "S", "H", "AB", "A
 
 physeq.rpa<-  prune_taxa(taxa_sums(physeq.rpa) > 0, physeq.rpa)
 physeq10 = tax_glom(physeq.rpa, "genus")
-data <- as.data.frame(t(physeq10@otu_table@.Data))
-colnames(data) <- as.data.frame(physeq10@tax_table@.Data)$genus
+
+physeq1 <- subset_samples(physeq10, group %in% c("A", "CTL"))
+data <- as.data.frame(t(physeq1@otu_table@.Data))
+colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
 colnames(data) <- make.names(colnames(data))
 data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
 
-data1$group <- as.factor(as.data.frame(meta(physeq.rpa))$group1)
+data1$group <- as.factor(as.data.frame(meta(physeq1))$group)
 set.seed(123)
 rf.fit<- randomForest(group ~ ., data = data1, importance = TRUE, )
-plot.roc(data1$group, 
-    rf.fit$votes[,1], 
-    percent=TRUE,
-    xlab="False Positive Percentage", 
-    ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
-varImpPlot(rf.fit, main = "variable importance")
-
-votes <- as.data.frame(rf2$votes)
-votes$group <- data$group
-longtest <- melt_roc(votes, "group", c("control", "infection", "co-infection"))
-
-ggplot(longtest, aes(d = D, m = M, color = name)) + geom_roc() + style_roc()
-
-
-data$group <- as.factor(as.data.frame(meta(physeq.rpa))$group2)
-set.seed(123)
-rf2<- randomForest(group ~ ., data = data, importance = TRUE, )
-
-
-
-roc(group, 
-    glm.fit$fitted.values, 
-    plot=TRUE, 
-    legacy.axes=TRUE, 
-    percent=TRUE, 
-    xlab="False Positive Percentage", 
-    ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
-
-# 在以上基础上，添加svm模型的ROC
-plot.roc(group,
-         pred_2,
-         percent=TRUE, 
-         col="red", 
-         lwd=4, 
-         print.auc=TRUE, 
-         add=TRUE, 
-         print.auc.y=40)
-
-# 在logistic回归模型的基础上，添加随机森林模型的ROC
-roc(group, 
+A <- plot.roc(data1$group, 
          rf.fit$votes[,1], 
-         percent=TRUE, 
-         col="#4daf4a", 
-         lwd=4, 
-         print.auc=TRUE, 
-         add=TRUE, 
-         print.auc.y=30, 
-    xlab="False Positive Percentage", 
-    ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
+         percent=TRUE,
+         xlab="False Positive Percentage", 
+         ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
 
-# 设置图例标签
-legend("bottomright", 
-       legend=c("Logisitic Regression", "SVM" , "Random Forest"), 
-       col=c("#377eb8", "red", "#4daf4a"), 
-       lwd=4)
+physeq1 <- subset_samples(physeq10, group %in% c("B", "CTL"))
+data <- as.data.frame(t(physeq1@otu_table@.Data))
+colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- make.names(colnames(data))
+data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+
+data1$group <- as.factor(as.data.frame(meta(physeq1))$group)
+set.seed(123)
+rf.fit<- randomForest(group ~ ., data = data1, importance = TRUE, )
+B <- plot.roc(data1$group, 
+              rf.fit$votes[,1], 
+              percent=TRUE,
+              xlab="False Positive Percentage", 
+              ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
+
+physeq1 <- subset_samples(physeq10, group %in% c("S", "CTL"))
+data <- as.data.frame(t(physeq1@otu_table@.Data))
+colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- make.names(colnames(data))
+data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+
+data1$group <- as.factor(as.data.frame(meta(physeq1))$group)
+set.seed(123)
+rf.fit<- randomForest(group ~ ., data = data1, importance = TRUE, )
+S <- plot.roc(data1$group, 
+              rf.fit$votes[,1], 
+              percent=TRUE,
+              xlab="False Positive Percentage", 
+              ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
+
+physeq1 <- subset_samples(physeq10, group %in% c("H", "CTL"))
+data <- as.data.frame(t(physeq1@otu_table@.Data))
+colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- make.names(colnames(data))
+data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+
+data1$group <- as.factor(as.data.frame(meta(physeq1))$group)
+set.seed(123)
+rf.fit<- randomForest(group ~ ., data = data1, importance = TRUE, )
+H <- plot.roc(data1$group, 
+              rf.fit$votes[,1], 
+              percent=TRUE,
+              xlab="False Positive Percentage", 
+              ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
+
+physeq1 <- subset_samples(physeq10, group1 %in% c("infection", "control"))
+data <- as.data.frame(t(physeq1@otu_table@.Data))
+colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- make.names(colnames(data))
+data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+
+data1$group <- as.factor(as.data.frame(meta(physeq1))$group1)
+set.seed(123)
+rf.fit<- randomForest(group ~ ., data = data1, importance = TRUE, )
+i <- plot.roc(data1$group, 
+              rf.fit$votes[,1], 
+              percent=TRUE,
+              xlab="False Positive Percentage", 
+              ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
+
+plot(A, time = 3, col="#95641f", lwd=2, title = "")
+plot(B, time = 3, col="#c4934e", lwd=2, add = T)
+plot(S, time = 3, col="#808000", lwd=2, add = T)
+plot(H, time = 3, col="#f2b77b", lwd=2, add = T)
+plot(i, time = 3, col="#054e61", lwd=2, add = T)
+legend("bottomright",
+       c(paste0("FluA: ",round(A[["auc"]],2)), 
+         paste0("FluB: ",round(B[["auc"]],2)), 
+         paste0("RSV: ",round(S[["auc"]],2)),
+         paste0("HRV: ",round(H[["auc"]],2)),
+         paste0("infection: ",round(i[["auc"]],2))
+       ),
+       col=c("#95641f", "#c4934e", "#808000","#f2b77b","#054e61"),
+       lty=1, lwd=2,bty = "n")
 
 
 data <- otu.train[,c(1,389:529)]
@@ -664,11 +733,11 @@ library("rfUtilities")
 library("rfPermute")
 
 group1 <- subset(meta, group == "A")
-group2 <- subset(meta, group != "A")
+group2 <- subset(meta, group == "CTL")
 data1 <- data.g[rownames(group1),]
 data2 <- data.g[sample(rownames(group2), nrow(group1)),]
 data1$group <- "A"
-data2$group <- "Others"
+data2$group <- "CTL"
 data.all <- rbind(data1, data2)
 data.all$group <- as.factor(data.all$group)
 
@@ -742,9 +811,9 @@ roc <- read.csv("C:/Users/DELL/Desktop/URTI.16SV4.202110/fig/FIG3/roc.csv",heade
 roc1 <- melt(roc)
 data_m_sd_mean <- roc1 %>% group_by(variable) %>% dplyr::summarise(sd=sd(value), value=mean(value))
 data_m_sd_mean <- as.data.frame(data_m_sd_mean)
-data_m_sd_mean$variable <- factor(data_m_sd_mean$variable,levels=c("A", "B", "S", "H", "AB", "ABS", "AS", "BH", "BS", "infection", "co.infection", "CTL"))
+data_m_sd_mean$variable <- factor(data_m_sd_mean$variable,levels=c("A", "B", "S", "H", "CTL"))
 
-col12<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#161645",  "#2b2950", "#333d72", "#6b6bcf", "#9da3d7",  "#EC3D33", "#e3766b", "#2B6B8E")
+col12<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
 ggplot(data_m_sd_mean, aes(x=variable, y=value)) + 
     geom_bar(stat="identity", aes(fill=variable)) +
     scale_fill_manual(values=col12) +
@@ -755,12 +824,12 @@ imp <- read.csv("C:/Users/DELL/Desktop/URTI.16SV4.202110/fig/FIG3/imp.csv",heade
 data <- as.data.frame(aggregate(imp$out_id, by=list(type=imp$Group_type,imp$out_id),length))
 data.50 <- subset(data, x >= 50)
 tax <- physeq.rpa@tax_table@.Data
-tax1 <- tax[data.50$Group.2, ]
+tax1 <- tax[data.50$Group.2[!duplicated(data.50$Group.2)], ]
 data2 <- subset(data, Group.2 %in% data.50$Group.2)
 data3 <- dcast(data2, type ~ Group.2)
 rownames(data3) <- data3$type
-data3 <- data3[c("A", "B", "S", "H", "AB", "ABS", "AS", "BH", "BS", "infection", "co-infection", "CTL"),-1]
-colnames(data3) <- paste(tax1[colnames(data3),]$Taxon, colnames(data3))
+data3 <- data3[c("A", "B", "S", "H", "CTL"),-1]
+colnames(data3) <- paste(as.data.frame(tax[colnames(data3),])$Taxon, colnames(data3))
 data3 <- data3[,colnames(data3)[order(colnames(data3))]]
 pheatmap::pheatmap(t(data3),cluster_rows = FALSE,  cluster_cols = FALSE)
 
@@ -776,296 +845,8 @@ pheatmap::pheatmap(t(data3),cluster_rows = FALSE,  cluster_cols = FALSE)
 ```
 
 
-## sparcc
-```{r}
-library(Matrix)
-library(car)
-library(igraph)
-library(RCy3)
-library(tidyverse)
 
-physeq.a<- subset_samples(physeq.rp, group != "NA")
-physeq.ap<-  prune_taxa(taxa_sums(physeq.a) > 0, physeq.a)
-physeq.ap.genus = tax_glom(physeq.ap, "genus")
-otus <- as.data.frame(t(physeq.ap.genus@otu_table@.Data))
-colnames(otus) <- as.data.frame(physeq.ap.genus@tax_table@.Data)$genus
-meta <- as.data.frame(meta(physeq.a))
-otus$group <- meta$group
-otus1 <- otus[,!colnames(otus) %in% c("g__uncultured", "g__uncultured bacterium", "g__unidentified")]
-colnames(otus1) <- make.names(colnames(otus1))
-
-dat <- otus1 %>%
-    group_by(group) %>%
-    summarise_if(is.numeric, list(~mean(.)))
-dat <- as.data.frame(dat)
-rownames(dat) <- dat$group
-dat<- dat[,-1]
-
-tax <- read.csv("C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti/tax.sparcc.csv",header = T, sep = ',',row.names = 1)
-
-r.CTL<- read.table('C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti/ResultsSparCC.CTL/CTL_sparcc.txt', header = T, sep = '\t', row.names = 1)
-p.CTL<- read.table('C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti/ResultsSparCC.CTL/CTL_pvals_two_sided.txt', header = T, sep = '\t', row.names = 1)
-
-r.CTL[p.CTL>0.01] = 0
-r.CTL1 <- as.matrix(r.CTL)
-
-tax.CTL1 <- tax[rownames(r.CTL),]
-
-igraph.CTL<-  graph_from_adjacency_matrix(r.CTL1,
-                                        mode="undirected",
-                                        weighted=TRUE,
-                                        diag=FALSE )
-
-V(igraph.CTL)$phylum <- tax.CTL1$phylum
-V(igraph.CTL)$genus <- tax.CTL1$genus
-tax.CTL1$mean <-  as.numeric(log10(dat["CTL",which(dat["CTL",] > 0)]/2+1))
-V(igraph.CTL)$mean <- tax.CTL1$mean
-
-createNetworkFromIgraph(igraph.CTL,"CTL")
-
-
-```
-
-## 鲁棒性1
-
-```{r}
-setwd("C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti")
-
-physeq.a<- subset_samples(physeq.rp, group == "A")
-physeq.ap<-  prune_taxa(taxa_sums(physeq.a) > 0, physeq.a)
-physeq.ap.genus = tax_glom(physeq.ap, "genus")
-otus <- as.data.frame(t(physeq.ap.genus@otu_table@.Data))
-colnames(otus) <- as.data.frame(physeq.ap.genus@tax_table@.Data)$genus
-otus1 <- otus[,!colnames(otus) %in% c("g__uncultured", "g__uncultured bacterium", "g__unidentified")]
-colnames(otus1) <- make.names(colnames(otus1))
-
-sp.ra<-colMeans(otus1)/20000   #relative abundance of each species
-
-###### there are two choices to get the correlation matrix #######
-
-
-###### choice 2: directely read in correlation matrix downloaded from MENAP. MENAP downloaded correlation matrix is an upper triangle. Need to make it into a symetric matrix.
-r.CTL<- read.table('C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti/ResultsSparCC.A/A_sparcc.txt', header = T, sep = '\t', row.names = 1)
-p.CTL<- read.table('C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti/ResultsSparCC.A/A_pvals_two_sided.txt', header = T, sep = '\t', row.names = 1)
-cormatrix <- r.CTL
-cormatrix[p.CTL>0.01] = 0
-
-###### end of the two choices of correlation matrix ########
-names(sp.ra) <- colnames(cormatrix)
-cormatrix2<-cormatrix*(abs(cormatrix)>=0)  #only keep links above the cutoff point
-cormatrix2[is.na(cormatrix2)]<-0
-diag(cormatrix2)<-0    #no links for self-self    
-sum(abs(cormatrix2)>0)/2  #this should be the number of links. 
-sum(colSums(abs(cormatrix2))>0)  # node number: number of species with at least one linkage with others.
-
-network.raw<-cormatrix2[colSums(abs(cormatrix2))>0,colSums(abs(cormatrix2))>0]
-sp.ra2<-sp.ra[colSums(abs(cormatrix2))>0]
-sum(row.names(network.raw)==names(sp.ra2))  #check if matched
-
-## robustness simulation 
-#input network matrix, percentage of randomly removed species, and ra of all species
-#return the proportion of species remained
-
-rand.remov.once<-function(netRaw, rm.percent, sp.ra, abundance.weighted=T){
-  id.rm<-sample(1:nrow(netRaw), round(nrow(netRaw)*rm.percent))
-  net.Raw=netRaw #don't want change netRaw
-  net.Raw[id.rm,]=0;  net.Raw[,id.rm]=0;   ##remove all the links to these species
-  if (abundance.weighted){
-    net.stength= net.Raw*sp.ra
-  } else {
-    net.stength= net.Raw
-  }
- 
-  sp.meanInteration<-colMeans(net.stength)
-
-  id.rm2<- which(sp.meanInteration<=0)  ##remove species have negative interaction or no interaction with others
-  remain.percent<-(nrow(netRaw)-length(id.rm2))/nrow(netRaw)
-  #for simplicity, I only consider the immediate effects of removing the
-  #'id.rm' species; not consider the sequential effects of extinction of
-  # the 'id.rm2' species.
-  
-  #you can write out the network pruned
-  #  net.Raw[id.rm2,]=0;  net.Raw[,id.rm2]=0;
-  # write.csv( net.Raw,"network pruned.csv")
-  
-  remain.percent
-}
-
-rm.p.list=seq(0.05,0.2,by=0.05)
-rmsimu<-function(netRaw, rm.p.list, sp.ra, abundance.weighted=T,nperm=100){
-  t(sapply(rm.p.list,function(x){
-    remains=sapply(1:nperm,function(i){
-      rand.remov.once(netRaw=netRaw, rm.percent=x, sp.ra=sp.ra, abundance.weighted=abundance.weighted)
-    })
-    remain.mean=mean(remains)
-    remain.sd=sd(remains)
-    remain.se=sd(remains)/(nperm^0.5)
-    result<-c(remain.mean,remain.sd,remain.se)
-    names(result)<-c("remain.mean","remain.sd","remain.se")
-    result
-  }))
-}
-
-Weighted.simu<-rmsimu(netRaw=network.raw, rm.p.list=seq(0.05,1,by=0.05), sp.ra=sp.ra2, abundance.weighted=T,nperm=100)
-Unweighted.simu<-rmsimu(netRaw=network.raw, rm.p.list=seq(0.05,1,by=0.05), sp.ra=sp.ra2, abundance.weighted=F,nperm=100)
-
-dat1<-data.frame(Proportion.removed=rep(seq(0.05,1,by=0.05),2),rbind(Weighted.simu,Unweighted.simu),
-                 weighted=rep(c("weighted","unweighted"),each=20), treat=rep("A",40))
-
-
-#write.csv(currentdat,"random_removal_result_Y14_W.csv")
-
-
-##plot
-library(ggplot2)
-
-currentdat <- rbind(A, dat1, dat2,dat3, dat.s, dat.h, dat.abs, dat.as, dat.bh, dat.bs)
-currentdat$treat <- factor(currentdat$treat,levels=c("A", "B", "S", "H", "AB", "ABS", "AS", "BH", "BS", "CTL"))
-ggplot(currentdat[currentdat$weighted=="unweighted",], aes(x=Proportion.removed, y=remain.mean, group=treat, color=treat)) + 
-    geom_line(size=1.5, alpha=0.8)+
-    geom_pointrange(aes(ymin=remain.mean-remain.sd, ymax=remain.mean+remain.sd),size=0.5)+
-    scale_color_manual(values=col10)+
-    xlab("Proportion of species removed")+
-    ylab("Proportion of species remained")+
-    theme_classic()
-  
-```
-
-## 鲁棒性2
-
-```{r}
-setwd("C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti")
-
-physeq.a<- subset_samples(physeq.rp, group == "A")
-physeq.ap<-  prune_taxa(taxa_sums(physeq.a) > 0, physeq.a)
-physeq.ap.genus = tax_glom(physeq.ap, "genus")
-otus <- as.data.frame(t(physeq.ap.genus@otu_table@.Data))
-colnames(otus) <- as.data.frame(physeq.ap.genus@tax_table@.Data)$genus
-otus1 <- otus[,!colnames(otus) %in% c("g__uncultured", "g__uncultured bacterium", "g__unidentified")]
-colnames(otus1) <- make.names(colnames(otus1))
-
-sp.ra<-colMeans(otus1)/20000   #relative abundance of each species
-
-###### there are two choices to get the correlation matrix #######
-###### choice 1 (slow): calculate correlation matrix from OTU table
-
-r.CTL<- read.table('C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti/ResultsSparCC.A/A_sparcc.txt', header = T, sep = '\t', row.names = 1)
-p.CTL<- read.table('C:/Users/DELL/Desktop/URTI.16SV4.202110/sparcc.urti/ResultsSparCC.A/A_pvals_two_sided.txt', header = T, sep = '\t', row.names = 1)
-cormatrix <- r.CTL
-cormatrix[p.CTL>0.01] = 0
-
-###### end of the two choices of correlation matrix ########
-names(sp.ra) <- colnames(cormatrix)
-cormatrix2<-cormatrix*(abs(cormatrix)>=0)  #only keep links above the cutoff point
-cormatrix2[is.na(cormatrix2)]<-0
-diag(cormatrix2)<-0    #no links for self-self    
-sum(abs(cormatrix2)>0)/2  #this should be the number of links. 
-sum(colSums(abs(cormatrix2))>0)  # node number: number of species with at least one linkage with others.
-
-network.raw<-cormatrix2[colSums(abs(cormatrix2))>0,colSums(abs(cormatrix2))>0]
-sp.ra2<-sp.ra[colSums(abs(cormatrix2))>0]
-sum(row.names(network.raw)==names(sp.ra2))  #check if matched
-## robustness simulation 
-#input network matrix, number of removed keystone species, keystonespecies list,  and ra of all species
-#return the proportion of species remained
-
-#get the keystone species list
-r.CTL1 <- as.matrix(cormatrix)
-igraph.CTL<-  graph_from_adjacency_matrix(r.CTL1,
-                                        mode="undirected",
-                                        weighted=TRUE,
-                                        diag=FALSE )
-library(ggClusterNet)
-res <- ZiPiPlot(igraph = igraph.CTL, method = "cluster_fast_greedy")
-node.attri <- as.data.frame(res[[2]])
-module.hub<-rownames(node.attri)[node.attri$z > 2.5 & node.attri$p <= 0.62]
-
-#consider cascade effects: removed species will further influence the remaining nodes
-
-rand.remov2.once<-function(netRaw, rm.num, keystonelist, sp.ra, abundance.weighted=T){
-  rm.num2<-ifelse(rm.num > length(keystonelist), length(keystonelist), rm.num)
-  id.rm<-sample(keystonelist, rm.num2)
-  net.Raw=netRaw #don't want change netRaw
-  
-  net.new=net.Raw[!names(sp.ra) %in% id.rm, !names(sp.ra) %in% id.rm]   ##remove all the links to these species
-  if (nrow(net.new)<2){
-    0
-  } else {
-    sp.ra.new=sp.ra[!names(sp.ra) %in% id.rm]
-    
-    if (abundance.weighted){
-      net.stength= net.new*sp.ra.new
-    } else {
-      net.stength= net.new
-    }
-    
-    sp.meanInteration<-colMeans(net.stength)
-    
-    
-    while ( length(sp.meanInteration)>1 & min(sp.meanInteration) <=0){
-      id.remain<- which(sp.meanInteration>0) 
-      net.new=net.new[id.remain,id.remain]
-      sp.ra.new=sp.ra.new[id.remain]
-      
-      if (abundance.weighted){
-        net.stength= net.new*sp.ra.new
-      } else {
-        net.stength= net.new
-      }
-      
-      if (length(net.stength)>1){
-        sp.meanInteration<-colMeans(net.stength)
-      } else{
-        sp.meanInteration<-0
-      }
-      
-    }
-    
-    remain.percent<-length(sp.ra.new)/length(sp.ra)
-    
-    remain.percent}
-}
-
-rm.p.list=seq(0.05,0.2,by=0.05)
-rmsimu<-function(netRaw, rm.p.list, keystonelist,sp.ra, abundance.weighted=T,nperm=100){
-  t(sapply(rm.p.list,function(x){
-    remains=sapply(1:nperm,function(i){
-      rand.remov2.once(netRaw=netRaw, rm.num=x, keystonelist=keystonelist, sp.ra=sp.ra, abundance.weighted=abundance.weighted)
-    })
-    remain.mean=mean(remains)
-    remain.sd=sd(remains)
-    remain.se=sd(remains)/(nperm^0.5)
-    result<-c(remain.mean,remain.sd,remain.se)
-    names(result)<-c("remain.mean","remain.sd","remain.se")
-    result
-  }))
-}
-
-Weighted.simu<-rmsimu(netRaw=network.raw, rm.p.list=1:length(module.hub),keystonelist=module.hub, sp.ra=sp.ra2, abundance.weighted=T,nperm=100)
-Unweighted.simu<-rmsimu(netRaw=network.raw, rm.p.list=1:length(module.hub), keystonelist=module.hub, sp.ra=sp.ra2, abundance.weighted=F,nperm=100)
-
-dat1<-data.frame(Number.hub.removed=rep(1:length(module.hub),2),rbind(Weighted.simu,Unweighted.simu),
-                 weighted=rep(c("weighted","unweighted"),each=length(module.hub)),treat=rep("A",2*length(module.hub)))
-
-currentdat = dat1
-#write.csv(currentdat,"targeted_deletion_results_Y14_W.csv")
-
-##plot
-library(ggplot2)
-
-currentdat$Number.hub.removed
-
-ggplot(currentdat[currentdat$weighted=="unweighted",], aes(x=Number.hub.removed, y=remain.mean, group=treat, color=treat)) + 
-    geom_line(size=1.5, alpha=0.8)+
-    geom_pointrange(aes(ymin=remain.mean-remain.sd, ymax=remain.mean+remain.sd),size=0.5)+
-    scale_color_manual(values=col10)+
-    xlab("Number.hub.removed")+
-    ylab("Proportion of species remained")+
-    theme_classic()
-
-```
-
-## fig5
+## growth rate of microbiota
 
 ```{r}
 
@@ -1079,7 +860,7 @@ col5<- c("#824533", "#FFCCB1", "#B79570", "#2B6B8E")
 names1 <- c("Streptococcus pneumoniae", "Mycoplasma pneumoniae", "Haemophilus influenzae", "Klebsiella pneumoniae", "Pseudomonas aeruginosa", "Staphylococcus aureus", "Chlamydia pneumoniae", "Legionella pneumophila", "Escherichia coli", "Treponema denticola", "Porphyromonas gingivalis", "Haemophilus sputorum","Staphylococcus epidermidis", "Fusobacterium nucleatum", "Treponema medium")
 
 data1 <- subset(grid, species %in% names1)
-
+data2 <- subset(grid, species %in% grid$species[-which(grid$species %in% names1)])
 
 data1$group <- factor(data1$group,levels=c("FluA", "FluB", "FluAB", "Health"))
 my_comparisons2 <- list(c("Health", "FluA"), c("Health", "FluB"), c("Health", "FluAB"))
