@@ -1,0 +1,322 @@
+,Var1,Var2,value
+896,PWY-5840: superpathway of menaquinol-7 biosynthesis,ARG,-0.4548131
+243,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,Capnocytophaga sp oral taxon 329,0.320671652
+1070,PWY-5898: superpathway of menaquinol-12 biosynthesis,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.611819887
+930,P42-PWY: incomplete reductive TCA cycle,gb|ACA23185_1|ARO_3000194|tetW,0.312367594
+1190,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.603377111
+840,gb|YP_007503840_1|ARO_3000165|tet(A),Veillonella unclassified,-0.512391261
+158,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,Atopobium rimae,0.375217819
+636,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),Rothia mucilaginosa,-0.472983114
+1503,PWY-6897: thiamin salvage II,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,0.367729831
+5,Campylobacter concisus,Abiotrophia defectiva,-0.452287599
+6,Capnocytophaga sp oral taxon 329,Abiotrophia defectiva,0.358456319
+178,Capnocytophaga sp oral taxon 329,Campylobacter concisus,-0.321394924
+13,Prevotella nanceiensis,Abiotrophia defectiva,0.333419612
+22,gb|ACA23185_1|ARO_3000194|tetW,Abiotrophia defectiva,-0.359869057
+884,gb|CAD09823_1|ARO_3003479|tetR,ARG,0.606195171
+179,Eikenella corrodens,Campylobacter concisus,-0.57627887
+1068,PWY-5840: superpathway of menaquinol-7 biosynthesis,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.681741427
+228,Prevotella nanceiensis,Capnocytophaga sp oral taxon 329,0.450497892
+1104,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,COA-PWY: coenzyme A biosynthesis I,0.361163227
+1113,PWY-5898: superpathway of menaquinol-12 biosynthesis,COA-PWY: coenzyme A biosynthesis I,0.655347092
+1236,PWY-5005: biotin biosynthesis II,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.623639775
+429,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),Lachnospiraceae oral taxon 107,0.38913436
+65,gb|ACA23185_1|ARO_3000194|tetW,Aggregatibacter unclassified,-0.449419894
+10,Lachnospiraceae oral taxon 107,Abiotrophia defectiva,0.43619236
+11,Leptotrichia wadei,Abiotrophia defectiva,-0.337779156
+883,gb|YP_007503840_1|ARO_3000165|tet(A),ARG,0.645663333
+971,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,gb|YP_007503840_1|ARO_3000165|tet(A),-0.408148818
+1061,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.967354597
+226,Leptotrichia wadei,Capnocytophaga sp oral taxon 329,-0.316901651
+456,COA-PWY: coenzyme A biosynthesis I,Leptotrichia wadei,0.344515324
+926,gb|YP_007503840_1|ARO_3000165|tet(A),gb|ACA23185_1|ARO_3000194|tetW,-0.418765311
+1023,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),gb|CAD09823_1|ARO_3003479|tetR,-0.335695967
+273,Rothia mucilaginosa,Eikenella corrodens,-0.353503988
+1204,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.596622889
+1370,PWY-5897: superpathway of menaquinol-11 biosynthesis,PWY-5005: biotin biosynthesis II,0.818574109
+1675,PWY-6897: thiamin salvage II,PWY-5899: superpathway of menaquinol-13 biosynthesis,0.420450281
+687,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),Streptococcus constellatus,0.328093676
+928,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,gb|ACA23185_1|ARO_3000194|tetW,0.38063209
+1066,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.555722326
+269,Leptotrichia wadei,Eikenella corrodens,-0.553297465
+1118,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,COA-PWY: coenzyme A biosynthesis I,0.339587242
+1410,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.733208255
+162,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),Atopobium rimae,0.32019738
+811,PWY-5897: superpathway of menaquinol-11 biosynthesis,Veillonella parvula,0.378424015
+15,Rothia mucilaginosa,Abiotrophia defectiva,-0.356779365
+1063,PWY-4242: pantothenate and coenzyme A biosynthesis III,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.567917448
+1069,PWY-5897: superpathway of menaquinol-11 biosynthesis,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.611819887
+267,Gemella unclassified,Eikenella corrodens,-0.322367194
+1071,PWY-5899: superpathway of menaquinol-13 biosynthesis,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.611819887
+1109,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),COA-PWY: coenzyme A biosynthesis I,0.612382739
+933,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),gb|ACA23185_1|ARO_3000194|tetW,0.36740105
+1021,PWY-5005: biotin biosynthesis II,gb|CAD09823_1|ARO_3003479|tetR,-0.410765141
+1243,PWY-5899: superpathway of menaquinol-13 biosynthesis,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.585178236
+844,P42-PWY: incomplete reductive TCA cycle,Veillonella unclassified,0.461747737
+633,PWY-4242: pantothenate and coenzyme A biosynthesis III,Rothia mucilaginosa,-0.521763602
+1590,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-5897: superpathway of menaquinol-11 biosynthesis,0.729268293
+683,PWY-5898: superpathway of menaquinol-12 biosynthesis,Streptococcus constellatus,0.434676433
+1634,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-5898: superpathway of menaquinol-12 biosynthesis,0.442213884
+7,Eikenella corrodens,Abiotrophia defectiva,0.59210191
+970,gb|CAD09823_1|ARO_3003479|tetR,gb|YP_007503840_1|ARO_3000165|tet(A),0.93446951
+192,Veillonella unclassified,Campylobacter concisus,0.342715076
+1115,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,COA-PWY: coenzyme A biosynthesis I,0.767917448
+1117,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),COA-PWY: coenzyme A biosynthesis I,0.597748593
+356,Prevotella intermedia,Gemella unclassified,0.413771517
+941,PWY-5898: superpathway of menaquinol-12 biosynthesis,gb|ACA23185_1|ARO_3000194|tetW,0.492616544
+978,PWY-5005: biotin biosynthesis II,gb|YP_007503840_1|ARO_3000165|tet(A),-0.445732642
+1195,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.655909944
+558,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),Prevotella nanceiensis,0.350347163
+183,Leptotrichia wadei,Campylobacter concisus,0.638952737
+199,P42-PWY: incomplete reductive TCA cycle,Campylobacter concisus,0.476570196
+1064,PWY-5005: biotin biosynthesis II,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.650281426
+1072,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.393433396
+627,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,Rothia mucilaginosa,-0.403377111
+938,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,gb|ACA23185_1|ARO_3000194|tetW,0.484946376
+375,PWY-4242: pantothenate and coenzyme A biosynthesis III,Gemella unclassified,-0.384619044
+841,gb|CAD09823_1|ARO_3003479|tetR,Veillonella unclassified,-0.476116349
+559,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,Prevotella nanceiensis,0.32201164
+314,Prevotella nanceiensis,Gemella morbillorum,0.318094491
+1062,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.52532833
+901,PWY-6897: thiamin salvage II,ARG,0.45444538
+838,ARG,Veillonella unclassified,-0.405141811
+1147,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,P42-PWY: incomplete reductive TCA cycle,0.387617261
+634,PWY-5005: biotin biosynthesis II,Rothia mucilaginosa,-0.338086304
+59,Streptococcus constellatus,Aggregatibacter unclassified,-0.337629494
+268,Lachnospiraceae oral taxon 107,Eikenella corrodens,0.528037562
+842,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,Veillonella unclassified,0.650311929
+1110,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,COA-PWY: coenzyme A biosynthesis I,0.612382739
+628,COA-PWY: coenzyme A biosynthesis I,Rothia mucilaginosa,-0.532645403
+155,COA-PWY: coenzyme A biosynthesis I,Atopobium rimae,0.31415592
+420,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),Lachnospiraceae oral taxon 107,0.314264146
+1239,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.515384615
+1373,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-5005: biotin biosynthesis II,0.373545966
+143,Prevotella oris,Atopobium rimae,0.382913679
+850,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),Veillonella unclassified,0.539893992
+1014,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,gb|CAD09823_1|ARO_3003479|tetR,-0.3901039
+1060,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.633020638
+1065,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.425140713
+1107,PWY-5005: biotin biosynthesis II,COA-PWY: coenzyme A biosynthesis I,0.506941839
+1244,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.371482176
+1461,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),0.60956848
+927,gb|CAD09823_1|ARO_3003479|tetR,gb|ACA23185_1|ARO_3000194|tetW,-0.374371031
+1369,PWY-5840: superpathway of menaquinol-7 biosynthesis,PWY-5005: biotin biosynthesis II,0.711390517
+182,Lachnospiraceae oral taxon 107,Campylobacter concisus,-0.337408669
+255,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,Capnocytophaga sp oral taxon 329,0.313023123
+457,P42-PWY: incomplete reductive TCA cycle,Leptotrichia wadei,0.441138448
+942,PWY-5899: superpathway of menaquinol-13 biosynthesis,gb|ACA23185_1|ARO_3000194|tetW,0.492616544
+1160,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),P42-PWY: incomplete reductive TCA cycle,0.379549719
+1542,PWY-5897: superpathway of menaquinol-11 biosynthesis,PWY-5840: superpathway of menaquinol-7 biosynthesis,0.686995696
+1074,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.465853659
+1106,PWY-4242: pantothenate and coenzyme A biosynthesis III,COA-PWY: coenzyme A biosynthesis I,0.907129456
+1112,PWY-5897: superpathway of menaquinol-11 biosynthesis,COA-PWY: coenzyme A biosynthesis I,0.655347092
+1114,PWY-5899: superpathway of menaquinol-13 biosynthesis,COA-PWY: coenzyme A biosynthesis I,0.655347092
+671,COA-PWY: coenzyme A biosynthesis I,Streptococcus constellatus,0.330001197
+632,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),Rothia mucilaginosa,-0.425703565
+813,PWY-5899: superpathway of menaquinol-13 biosynthesis,Veillonella parvula,0.378424015
+1058,COA-PWY: coenzyme A biosynthesis I,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.424202627
+1059,P42-PWY: incomplete reductive TCA cycle,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.400375235
+931,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,gb|ACA23185_1|ARO_3000194|tetW,0.314572768
+1235,PWY-4242: pantothenate and coenzyme A biosynthesis III,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.522326454
+1323,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),PWY-4242: pantothenate and coenzyme A biosynthesis III,0.615009381
+1411,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.733208255
+803,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,Veillonella parvula,0.423076923
+491,Streptococcus peroris,Prevotella intermedia,0.351275142
+1288,PWY-6897: thiamin salvage II,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.589493433
+852,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,Veillonella unclassified,0.723955158
+154,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,Atopobium rimae,0.443831543
+1105,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),COA-PWY: coenzyme A biosynthesis I,0.693433396
+1153,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,P42-PWY: incomplete reductive TCA cycle,0.448592871
+1238,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.515384615
+1197,PWY-5840: superpathway of menaquinol-7 biosynthesis,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.576468391
+1414,PWY-5898: superpathway of menaquinol-12 biosynthesis,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.661350844
+1415,PWY-5899: superpathway of menaquinol-13 biosynthesis,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.661350844
+1289,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.70206379
+1500,PWY-5898: superpathway of menaquinol-12 biosynthesis,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,0.950844278
+935,PWY-5005: biotin biosynthesis II,gb|ACA23185_1|ARO_3000194|tetW,0.499999081
+1025,PWY-5840: superpathway of menaquinol-7 biosynthesis,gb|CAD09823_1|ARO_3003479|tetR,-0.638453745
+1194,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.498874296
+430,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,Lachnospiraceae oral taxon 107,0.414647458
+1287,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.649906191
+1501,PWY-5899: superpathway of menaquinol-13 biosynthesis,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,0.950844278
+165,PWY-5840: superpathway of menaquinol-7 biosynthesis,Atopobium rimae,0.468085212
+1067,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,0.555722326
+1192,PWY-4242: pantothenate and coenzyme A biosynthesis III,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.913508443
+1674,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-5899: superpathway of menaquinol-13 biosynthesis,0.628893058
+1718,PWY-6897: thiamin salvage II,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,0.870731707
+900,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,ARG,0.357400395
+975,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,gb|YP_007503840_1|ARO_3000165|tet(A),-0.451772899
+415,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,Lachnospiraceae oral taxon 107,0.324040193
+467,PWY-5897: superpathway of menaquinol-11 biosynthesis,Leptotrichia wadei,0.327781183
+807,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),Veillonella parvula,0.391557223
+934,PWY-4242: pantothenate and coenzyme A biosynthesis III,gb|ACA23185_1|ARO_3000194|tetW,0.32243469
+940,PWY-5897: superpathway of menaquinol-11 biosynthesis,gb|ACA23185_1|ARO_3000194|tetW,0.492616544
+1242,PWY-5898: superpathway of menaquinol-12 biosynthesis,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.585178236
+630,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,Rothia mucilaginosa,-0.466791745
+845,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,Veillonella unclassified,0.445330457
+1547,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-5840: superpathway of menaquinol-7 biosynthesis,0.327265909
+682,PWY-5897: superpathway of menaquinol-11 biosynthesis,Streptococcus constellatus,0.434676433
+372,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,Gemella unclassified,-0.34095903
+937,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),gb|ACA23185_1|ARO_3000194|tetW,0.484946376
+469,PWY-5899: superpathway of menaquinol-13 biosynthesis,Leptotrichia wadei,0.327781183
+1332,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-4242: pantothenate and coenzyme A biosynthesis III,0.732645403
+1502,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,0.561726079
+222,Eikenella corrodens,Capnocytophaga sp oral taxon 329,0.439713868
+1155,PWY-5897: superpathway of menaquinol-11 biosynthesis,P42-PWY: incomplete reductive TCA cycle,0.505440901
+1156,PWY-5898: superpathway of menaquinol-12 biosynthesis,P42-PWY: incomplete reductive TCA cycle,0.505440901
+1278,PWY-4242: pantothenate and coenzyme A biosynthesis III,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.778424015
+1240,PWY-5840: superpathway of menaquinol-7 biosynthesis,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.701257284
+406,Veillonella parvula,Lachnospiraceae oral taxon 107,0.316410108
+1545,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-5840: superpathway of menaquinol-7 biosynthesis,0.330831306
+805,PWY-4242: pantothenate and coenzyme A biosynthesis III,Veillonella parvula,0.320262664
+812,PWY-5898: superpathway of menaquinol-12 biosynthesis,Veillonella parvula,0.378424015
+468,PWY-5898: superpathway of menaquinol-12 biosynthesis,Leptotrichia wadei,0.327781183
+1633,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-5898: superpathway of menaquinol-12 biosynthesis,0.729268293
+1103,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,COA-PWY: coenzyme A biosynthesis I,0.775984991
+800,COA-PWY: coenzyme A biosynthesis I,Veillonella parvula,0.335459662
+578,Veillonella parvula,Prevotella oris,0.415163215
+1544,PWY-5899: superpathway of menaquinol-13 biosynthesis,PWY-5840: superpathway of menaquinol-7 biosynthesis,0.686995696
+1333,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.47804878
+1588,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-5897: superpathway of menaquinol-11 biosynthesis,0.628893058
+1018,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,gb|CAD09823_1|ARO_3003479|tetR,-0.439494104
+1234,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.499437148
+1325,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.753470919
+1418,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.568105066
+1589,PWY-6897: thiamin salvage II,PWY-5897: superpathway of menaquinol-11 biosynthesis,0.420450281
+855,PWY-5898: superpathway of menaquinol-12 biosynthesis,Veillonella unclassified,0.704254422
+1108,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),COA-PWY: coenzyme A biosynthesis I,0.574296435
+1111,PWY-5840: superpathway of menaquinol-7 biosynthesis,COA-PWY: coenzyme A biosynthesis I,0.453931327
+843,COA-PWY: coenzyme A biosynthesis I,Veillonella unclassified,0.326750786
+1284,PWY-5897: superpathway of menaquinol-11 biosynthesis,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.674296435
+156,P42-PWY: incomplete reductive TCA cycle,Atopobium rimae,0.472960011
+679,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),Streptococcus constellatus,0.441591198
+166,PWY-5897: superpathway of menaquinol-11 biosynthesis,Atopobium rimae,0.508129939
+544,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,Prevotella nanceiensis,0.333270788
+1246,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.452532833
+1459,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),0.561726079
+932,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,gb|ACA23185_1|ARO_3000194|tetW,0.372482537
+1324,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),PWY-4242: pantothenate and coenzyme A biosynthesis III,0.753470919
+637,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,Rothia mucilaginosa,-0.472983114
+1024,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,gb|CAD09823_1|ARO_3003479|tetR,-0.335695967
+1148,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),P42-PWY: incomplete reductive TCA cycle,0.312382739
+1150,PWY-5005: biotin biosynthesis II,P42-PWY: incomplete reductive TCA cycle,0.529268293
+1366,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),PWY-5005: biotin biosynthesis II,0.561913696
+1326,PWY-5840: superpathway of menaquinol-7 biosynthesis,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.535935457
+1632,PWY-6897: thiamin salvage II,PWY-5898: superpathway of menaquinol-12 biosynthesis,0.420450281
+851,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),Veillonella unclassified,0.723955158
+641,PWY-5899: superpathway of menaquinol-13 biosynthesis,Rothia mucilaginosa,-0.435459662
+982,PWY-5840: superpathway of menaquinol-7 biosynthesis,gb|YP_007503840_1|ARO_3000165|tet(A),-0.562712412
+1372,PWY-5899: superpathway of menaquinol-13 biosynthesis,PWY-5005: biotin biosynthesis II,0.818574109
+1455,PWY-5840: superpathway of menaquinol-7 biosynthesis,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),0.666353924
+1146,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,P42-PWY: incomplete reductive TCA cycle,0.411819887
+461,PWY-4242: pantothenate and coenzyme A biosynthesis III,Leptotrichia wadei,0.361533096
+1193,PWY-5005: biotin biosynthesis II,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.59249531
+1152,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),P42-PWY: incomplete reductive TCA cycle,0.448592871
+161,PWY-5005: biotin biosynthesis II,Atopobium rimae,0.508129939
+462,PWY-5005: biotin biosynthesis II,Leptotrichia wadei,0.367583859
+1368,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,PWY-5005: biotin biosynthesis II,0.814071295
+354,Lachnospiraceae oral taxon 107,Gemella unclassified,-0.314643397
+635,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),Rothia mucilaginosa,-0.364540338
+853,PWY-5840: superpathway of menaquinol-7 biosynthesis,Veillonella unclassified,0.60286184
+1498,PWY-5840: superpathway of menaquinol-7 biosynthesis,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,0.666353924
+1328,PWY-5898: superpathway of menaquinol-12 biosynthesis,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.80956848
+939,PWY-5840: superpathway of menaquinol-7 biosynthesis,gb|ACA23185_1|ARO_3000194|tetW,0.358359967
+465,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,Leptotrichia wadei,0.347824335
+1202,PWY-6897: thiamin salvage II,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.571294559
+1286,PWY-5899: superpathway of menaquinol-13 biosynthesis,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.674296435
+1285,PWY-5898: superpathway of menaquinol-12 biosynthesis,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.674296435
+1416,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.494371482
+1504,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,0.60956848
+1505,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,0.338461538
+644,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),Rothia mucilaginosa,-0.394183865
+466,PWY-5840: superpathway of menaquinol-7 biosynthesis,Leptotrichia wadei,0.3859031
+631,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,Rothia mucilaginosa,-0.39793621
+1327,PWY-5897: superpathway of menaquinol-11 biosynthesis,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.80956848
+157,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,Atopobium rimae,0.488495194
+139,Lachnospiraceae oral taxon 107,Atopobium rimae,0.39048153
+386,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),Gemella unclassified,-0.402391239
+1280,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.505628518
+642,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,Rothia mucilaginosa,-0.571669794
+1157,PWY-5899: superpathway of menaquinol-13 biosynthesis,P42-PWY: incomplete reductive TCA cycle,0.505440901
+1367,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),PWY-5005: biotin biosynthesis II,0.814071295
+854,PWY-5897: superpathway of menaquinol-11 biosynthesis,Veillonella unclassified,0.704254422
+1720,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,0.593058161
+980,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),gb|YP_007503840_1|ARO_3000165|tet(A),-0.340938971
+1196,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.655909944
+1283,PWY-5840: superpathway of menaquinol-7 biosynthesis,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.445299314
+676,PWY-4242: pantothenate and coenzyme A biosynthesis III,Streptococcus constellatus,0.322847992
+159,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),Atopobium rimae,0.486121763
+680,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,Streptococcus constellatus,0.441591198
+1198,PWY-5897: superpathway of menaquinol-11 biosynthesis,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.787992495
+1200,PWY-5899: superpathway of menaquinol-13 biosynthesis,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.787992495
+639,PWY-5897: superpathway of menaquinol-11 biosynthesis,Rothia mucilaginosa,-0.435459662
+1322,PWY-5005: biotin biosynthesis II,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.601125704
+1413,PWY-5897: superpathway of menaquinol-11 biosynthesis,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.661350844
+1191,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.777485929
+1203,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.78217636
+848,PWY-4242: pantothenate and coenzyme A biosynthesis III,Veillonella unclassified,0.442422253
+839,gb|ACA23185_1|ARO_3000194|tetW,Veillonella unclassified,0.471737463
+1331,PWY-6897: thiamin salvage II,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.629643527
+98,Prevotella intermedia,Alloprevotella tannerae,0.360398737
+809,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,Veillonella parvula,0.439774859
+1241,PWY-5897: superpathway of menaquinol-11 biosynthesis,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,0.585178236
+1329,PWY-5899: superpathway of menaquinol-13 biosynthesis,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.80956848
+1330,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-4242: pantothenate and coenzyme A biosynthesis III,0.787242026
+804,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),Veillonella parvula,0.346153846
+849,PWY-5005: biotin biosynthesis II,Veillonella unclassified,0.845161594
+1462,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),0.338461538
+1116,PWY-6897: thiamin salvage II,COA-PWY: coenzyme A biosynthesis I,0.688930582
+799,ARG+POLYAMINE-SYN: superpathway of arginine and polyamine biosynthesis,Veillonella parvula,0.469418386
+1154,PWY-5840: superpathway of menaquinol-7 biosynthesis,P42-PWY: incomplete reductive TCA cycle,0.418840315
+1456,PWY-5897: superpathway of menaquinol-11 biosynthesis,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),0.950844278
+1458,PWY-5899: superpathway of menaquinol-13 biosynthesis,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),0.950844278
+1201,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.785741088
+1282,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.608818011
+1417,PWY-6897: thiamin salvage II,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.394371482
+1290,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.369043152
+1457,PWY-5898: superpathway of menaquinol-12 biosynthesis,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),0.950844278
+1719,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,0.809005629
+164,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,Atopobium rimae,0.453972565
+808,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),Veillonella parvula,0.439774859
+1279,PWY-5005: biotin biosynthesis II,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.563227017
+640,PWY-5898: superpathway of menaquinol-12 biosynthesis,Rothia mucilaginosa,-0.435459662
+1419,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-5154: L-arginine biosynthesis III (via N-acetyl-L-citrulline),0.435459662
+1460,PWY-6897: thiamin salvage II,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),0.367729831
+945,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),gb|ACA23185_1|ARO_3000194|tetW,0.330680121
+1281,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),0.608818011
+1676,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-5899: superpathway of menaquinol-13 biosynthesis,0.729268293
+163,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),Atopobium rimae,0.453972565
+806,PWY-5005: biotin biosynthesis II,Veillonella parvula,0.645403377
+638,PWY-5840: superpathway of menaquinol-7 biosynthesis,Rothia mucilaginosa,-0.453556022
+1762,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-6897: thiamin salvage II,0.706003752
+686,PWY-6897: thiamin salvage II,Streptococcus constellatus,0.350745492
+1199,PWY-5898: superpathway of menaquinol-12 biosynthesis,PANTOSYN-PWY: pantothenate and coenzyme A biosynthesis I,0.787992495
+618,Streptococcus constellatus,Rothia mucilaginosa,-0.413455257
+1631,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,PWY-5898: superpathway of menaquinol-12 biosynthesis,0.628893058
+1161,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,P42-PWY: incomplete reductive TCA cycle,0.565103189
+1499,PWY-5897: superpathway of menaquinol-11 biosynthesis,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,0.950844278
+847,PWY0-1586: peptidoglycan maturation (meso-diaminopimelate containing),Veillonella unclassified,0.403489845
+643,PWY-6897: thiamin salvage II,Rothia mucilaginosa,-0.452908068
+1375,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),PWY-5005: biotin biosynthesis II,0.457035647
+1371,PWY-5898: superpathway of menaquinol-12 biosynthesis,PWY-5005: biotin biosynthesis II,0.818574109
+846,POLYAMSYN-PWY: superpathway of polyamine biosynthesis I,Veillonella unclassified,0.614850603
+464,PWY-5791: 1_4-dihydroxy-2-naphthoate biosynthesis II (plants),Leptotrichia wadei,0.347824335
+684,PWY-5899: superpathway of menaquinol-13 biosynthesis,Streptococcus constellatus,0.434676433
+685,PWY-6147: 6-hydroxymethyl-dihydropterin diphosphate biosynthesis I,Streptococcus constellatus,0.396287565
+981,PWY-5837: 1_4-dihydroxy-2-naphthoate biosynthesis I,gb|YP_007503840_1|ARO_3000165|tet(A),-0.340938971
+1543,PWY-5898: superpathway of menaquinol-12 biosynthesis,PWY-5840: superpathway of menaquinol-7 biosynthesis,0.686995696
+1677,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-5899: superpathway of menaquinol-13 biosynthesis,0.442213884
+856,PWY-5899: superpathway of menaquinol-13 biosynthesis,Veillonella unclassified,0.704254422
+160,PWY-4242: pantothenate and coenzyme A biosynthesis III,Atopobium rimae,0.403051688
+810,PWY-5840: superpathway of menaquinol-7 biosynthesis,Veillonella parvula,0.398386196
+167,PWY-5898: superpathway of menaquinol-12 biosynthesis,Atopobium rimae,0.508129939
+168,PWY-5899: superpathway of menaquinol-13 biosynthesis,Atopobium rimae,0.508129939
+1591,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-5897: superpathway of menaquinol-11 biosynthesis,0.442213884
+1806,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-7282: 4-amino-2-methyl-5-phosphomethylpyrimidine biosynthesis (yeast),0.752532833
+149,Veillonella unclassified,Atopobium rimae,0.41644874
+1763,SULFATE-CYS-PWY: superpathway of sulfate assimilation and cysteine biosynthesis,PWY-6897: thiamin salvage II,0.433958724
+148,Veillonella parvula,Atopobium rimae,0.508561471
+794,Veillonella unclassified,Veillonella parvula,0.596369436
+621,Veillonella parvula,Rothia mucilaginosa,-0.367166979
+146,Streptococcus gordonii,Atopobium rimae,0.379512948
+49,Capnocytophaga sp oral taxon 329,Aggregatibacter unclassified,-0.380323976

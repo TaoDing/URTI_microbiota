@@ -16,293 +16,81 @@ library(picante)
 library(phyloseq)
 library(plyr)
 library(ggplot2)
-library(plyr)
 library(reshape2)
 library(patchwork) #拼图
 library(cowplot)
 library(ggpubr) #统计
 library(GUniFrac)
 library(microbiome)
+library(ggthemes)
+library(ggrepel)
+library(tidyverse)
 suppressWarnings(suppressMessages(library(amplicon)))
 ```
 
 
-## make phyloseq of 16S
+## make phyloseqs
 
 ```{r}
-setwd("C:/Users/DELL/Desktop/URTI.16SV4.202110/qiime2out")
 
-##构建对象
-
-otu <- read.delim('feature-table.txt', row.names = 1, sep = '\t', stringsAsFactors = FALSE, check.names = FALSE)
-metadata <- read.table('metadata.txt', header = T, sep = '\t', row.names = 1)
-metadata <- metadata[colnames(otu),]
-tax<- read.table('tax.txt', header = T, sep = '\t', row.names = 1)
-tree<- read.tree('tree.nwk')
-repseqFile = "rep.fasta"
-rep.seq = Biostrings::readDNAStringSet(repseqFile)
-
-otumat<- otu
-
-OTU = otu_table(otumat, taxa_are_rows = TRUE)
-taxmat<- as.matrix(tax)
-TAX = tax_table(taxmat)
-sampledata<- sample_data(metadata)
-
-
-physeq0 = merge_phyloseq(OTU, TAX)
-physeq = merge_phyloseq(physeq0, sampledata, tree, rep.seq)
-physeq2 = merge_phyloseq(OTU, TAX, sampledata, tree, rep.seq)
-identical(physeq, physeq2)
-
-#过滤样本
-sub_physeq <- subset_taxa(physeq, kindom == "k__Bacteria")
-prevdf = apply(X = otu_table(sub_physeq),
-               MARGIN = ifelse(taxa_are_rows(sub_physeq), yes = 1, no = 2),
-               FUN = function(x){sum(x > 0)})
-
-physeq.great<- prune_taxa(names(which(prevdf >= 2)), sub_physeq)
-
-set.seed(003)
-physeq.r = rarefy_even_depth(physeq.great, sample.size =20000, replace = TRUE)
-
-physeq.rp <- prune_taxa(taxa_sums(physeq.r) > 0, physeq.r)
+# setwd("qiime2out")
+# 
+# otu <- read.delim('feature-table.txt', row.names = 1, sep = '\t', stringsAsFactors = FALSE, check.names = FALSE)
+# metadata <- read.table('metadata.txt', header = T, sep = '\t', row.names = 1)
+# metadata <- metadata[colnames(otu),]
+# tax<- read.table('tax.txt', header = T, sep = '\t', row.names = 1)
+# tree<- read.tree('tree.nwk')
+# repseqFile = "rep.fasta"
+# rep.seq = Biostrings::readDNAStringSet(repseqFile)
+# 
+# otumat<- otu
+# 
+# OTU = otu_table(otumat, taxa_are_rows = TRUE)
+# taxmat<- as.matrix(tax)
+# TAX = tax_table(taxmat)
+# sampledata<- sample_data(metadata)
+# 
+# 
+# physeq0 = merge_phyloseq(OTU, TAX)
+# physeq = merge_phyloseq(physeq0, sampledata, tree, rep.seq)
+# physeq2 = merge_phyloseq(OTU, TAX, sampledata, tree, rep.seq)
+# identical(physeq, physeq2)
+# 
+# sub_physeq <- subset_taxa(physeq, kindom == "k__Bacteria")
+# prevdf = apply(X = otu_table(sub_physeq),
+#                MARGIN = ifelse(taxa_are_rows(sub_physeq), yes = 1, no = 2),
+#                FUN = function(x){sum(x > 0)})
+# 
+# physeq.great<- prune_taxa(names(which(prevdf >= 2)), sub_physeq)
+# 
+# set.seed(003)
+# physeq.r = rarefy_even_depth(physeq.great, sample.size =20000, replace = TRUE)
+# 
+# physeq.rp <- prune_taxa(taxa_sums(physeq.r) > 0, physeq.r)
+# 
+# save(physea.rp, file = "physeq.rp.Rdata")
 ```
 
 
-## microbial composition
+## Figure 2A
 
 ```{r}
-# phylum水平
-cols15 = c("#660066", "#56B4E9", "#009E73", "#FF0000","#333333", "#F0E442",  "#D55E00","#CC79A7","#990000","#9900cc","#66FF66","#663300","#0000FF","#CC0033","#999999")
 
-phylum.p = tax_glom(physeq.r2, "phylum")
-otus <- as.data.frame(phylum.p@otu_table@.Data)
-tax <- as.data.frame(phylum.p@tax_table@.Data)
-tax1 <- tax[!duplicated(tax$phylum),]
-otus1 <- otus[rownames(tax1),]
-rownames(otus1) <- tax1$phylum
-Unknown <- colSums(physeq.r2@otu_table@.Data) - colSums(otus1)
-otus2 <- rbind(otus1, Unknown)
-tax_stackplot(otus2, meta, groupID="groups2", topN=15, style="sample")+ scale_fill_manual(values=cols15)
-
-cols20 = c("#FF0099", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2","#D55E00","#CC79A7","#990000","#9900cc","#66FF66","#663300","#0000FF","#CC0033","#FF0000","#000099","#660066","#333333","#9966CC","#999999")
-#genus水平
-genus.p = tax_glom(physeq.r2, "genus")
-otus <- as.data.frame(genus.p@otu_table@.Data)
-tax <- as.data.frame(genus.p@tax_table@.Data)
-tax1 <- tax[!duplicated(tax$genus),]
-otus1 <- otus[rownames(tax1),]
-rownames(otus1) <- tax1$genus
-Unknown <- colSums(physeq.r2@otu_table@.Data) - colSums(otus1)
-otus2 <- rbind(otus1, Unknown)
-tax_stackplot(otus2, meta, groupID="groups2", topN=20, style="sample")+ scale_fill_manual(values=cols20)
-
-physeq.r3<- prune_taxa(names(which(prevdf >= 12)), physeq.r2)
-genus.p = tax_glom(physeq.r3, "genus")
-otus <- as.data.frame(genus.p@otu_table@.Data)
-tax <- as.data.frame(genus.p@tax_table@.Data)
-tax1 <- tax[!duplicated(tax$genus),]
-otus1 <- otus[rownames(tax1),]
-rownames(otus1) <- tax1$genus
-
-otus2<- log10((otus1+0.1)/5000)
-annotation_col = data.frame(
-  group1 = meta$groups1, 
-  group2 = meta$groups2
-)
-rownames(annotation_col) = colnames(otus2)
-head(annotation_col)
-annotation_row = data.frame(
-  phylum = tax1$phylum
-)
-rownames(annotation_row) = rownames(otus2)
-head(annotation_col)
-pheatmap(otus2, annotation_col = annotation_col, annotation_row = annotation_row)
-
-```
-
-
-
-## alpha diversity
-
-```{r}
-#load('physeq.rp.Rdata')
-col2 <- c("#ad1500", "#2B6B8E")
-col3 <- c("#EC3D33", "#e3766b","#2B6B8E")
-col5<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
-
-s.sh <- plot_richness(physeq.rp, "group",  measures=NULL)
-s.data <- s.sh$data
-
-s.data1 <- subset(s.data, group != "NA" & variable %in% c("Shannon"))
-s.data1$group1 <- factor(s.data1$group1,levels=c("infection", "control"))
-
-my_comparisons2 <- list(c("infection", "control"))
-pa1 <- ggplot(data=s.data1, aes(x = group1, y = value, group=group1)) +
-    geom_boxplot(aes(x=group1, fill=group1), notch=FALSE, outlier.colour = "grey") +
-    stat_summary(aes(x=group1), fun.y=mean, geom="point", color="grey") +
-    geom_jitter(width=0.2, size=1.5, alpha = 0.75) +
-    scale_fill_manual(values=col2) +
-    theme(title=element_text(size=14,color="#4F4F4F"))+
-    #facet_wrap(.~variable, scales = "free", nrow=1)+
-    stat_compare_means(comparisons = my_comparisons2, paired = FALSE, color="black")+
-    theme_classic()+ 
-    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
-    theme(legend.title = element_blank())+ 
-    theme(legend.position='none')+
-    theme(plot.title = element_text(hjust = 0.5))
-# +theme(strip.text = element_text(colour = 'black', face = 'bold', size = rel(1.2)), strip.background = element_rect(fill = 'white', colour = 'black', size = rel(2), linetype = 1))
-
-s.data1$group2 <- factor(s.data1$group2,levels=c("infection", "co-infection", "control"))
-my_comparisons3 <- list(c("co-infection", "control"), c("infection", "control"))
-pa2 <- ggplot(data=s.data1, aes(x = group2, y = value, group=group2)) +
-    geom_boxplot(aes(x=group2, fill=group2), notch=FALSE, outlier.colour = "grey") +
-    stat_summary(aes(x=group2), fun.y=mean, geom="point", color="grey") +
-    geom_jitter(width=0.2, size=1.5, alpha = 0.75) +
-    scale_fill_manual(values=col3) +
-    theme(title=element_text(size=14,color="#4F4F4F"))+
-    #facet_wrap(.~variable, scales = "free", nrow=1)+
-    stat_compare_means(comparisons = my_comparisons3, paired = FALSE, color="black")+
-    theme_classic()+ 
-    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
-    theme(legend.title = element_blank())+ 
-    theme(legend.position='none')+
-    theme(plot.title = element_text(hjust = 0.5))
-
-sub_s.data <- subset(s.data, group %in% c("CTL", "A", "B", "S", "H") & variable %in% c("Shannon"))
-sub_s.data$group <- factor(sub_s.data$group,levels=c("A", "B", "S", "H", "CTL"))
-my_comparisons5 <- list(c("CTL", "H"), c("CTL", "S"), c("CTL", "B"), c("A", "CTL"))
-pa3 <- ggplot(data=sub_s.data, aes(x = group, y = value, group=group)) +
-    geom_boxplot(aes(x=group, fill=group), notch=FALSE, outlier.colour = "grey") +
-    stat_summary(aes(x=group), fun.y=mean, geom="point", color="grey") +
-    geom_jitter(width=0.2, size=1.5, alpha = 0.75) +
-    scale_fill_manual(values=col5) +
-    theme(title=element_text(size=14,color="#4F4F4F"))+
-    #facet_wrap(.~variable, scales = "free", nrow=1)+
-    stat_compare_means(comparisons = my_comparisons5, paired = FALSE, color="black")+
-    theme_classic()+ 
-    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
-    theme(legend.title = element_blank())+ 
-    theme(legend.position='none')+
-    theme(plot.title = element_text(hjust = 0.5))
-
-(pa1 + pa2 + pa3 + plot_layout(nrow = 1, widths = c(2.3, 3.2, 5)))
-
-
-s.data1 <- subset(s.data, group == "A" & variable %in% c("Shannon"))
-
-p1<- ggplot(data=s.data1 , aes( y = value, x = log(FluA))) +
-    geom_point(alpha=0.6, color="black",size=2)+ 
-    geom_smooth(method=lm, size=2, color="#824533")+
-    theme_bw()+
-    theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
-    theme(legend.title = element_blank())+ 
-    theme(title=element_text(size=11))+
-    theme(legend.position="none")+
-    stat_cor(method = "spearman", color="black", size=6)
-
-s.data1 <- subset(s.data, group == "B" & variable %in% c("Shannon"))
-
-p2<- ggplot(data=s.data1 , aes( y = value, x = log(FluB))) +
-    geom_point(alpha=0.6, color="black",size=2)+ 
-    geom_smooth(method=lm, size=2, color="#B79570")+
-    theme_bw()+
-    theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
-    theme(legend.title = element_blank())+ 
-    theme(title=element_text(size=11))+
-    theme(legend.position="none")+
-    stat_cor(method = "spearman", color= "black", size=6)
-
-s.data1 <- subset(s.data, group == "S" & variable %in% c("Shannon"))
-
-p3<- ggplot(data=s.data1 , aes( y = value, x = log(RSV))) +
-    geom_point(alpha=0.6, color="black",size=2)+ 
-    geom_smooth(method=lm, size=2, color="#CAD09E")+
-    theme_bw()+
-    theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
-    theme(legend.title = element_blank())+ 
-    theme(title=element_text(size=11))+
-    theme(legend.position="none")+
-    stat_cor(method = "spearman", color= "black", size=6)
-
-s.data1 <- subset(s.data, group == "H" & variable %in% c("Shannon"))
-
-p4<- ggplot(data=s.data1 , aes( y = value, x = log(RHV))) +
-    geom_point(alpha=0.6, color="black",size=2)+ 
-    geom_smooth(method=lm, size=2, color="#FFCCB1")+
-    theme_bw()+
-    theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
-    theme(legend.title = element_blank())+ 
-    theme(title=element_text(size=11))+
-    theme(legend.position="none")+
-    stat_cor(method = "spearman", color= "black", size=6)
-
-p1 | p2 | p3 | p4
-
-library(tidyverse)
-library("randomForest")
-library("rfUtilities")
-library("rfPermute")
-
-physeq.a<- subset_samples(physeq.rp, group == "A")
-physeq.ap<-  prune_taxa(taxa_sums(physeq.a) > 0, physeq.a)
-physeq.ap.genus = tax_glom(physeq.ap, "genus")
-otus <- as.data.frame(t(physeq.ap.genus@otu_table@.Data))
-colnames(otus) <- as.data.frame(physeq.ap.genus@tax_table@.Data)$genus
-otus$Observed <- subset(s.data, group == "A" & variable %in% c("Observed"))$FluA
-otus1 <- otus[,!colnames(otus) %in% c("g__uncultured", "g__uncultured bacterium", "g__unidentified")]
-colnames(otus1) <- make.names(colnames(otus1))
-
-set.seed(123)
-richness_rf <- randomForest(Observed ~ ., data= otus1, importance=TRUE,proximity=TRUE)
-set.seed(123)
-richness_perm <- rf.significance(richness_rf, otus1[,-136], nperm=99, ntree=501)
-set.seed(123)
-richness_rfP<- rfPermute(Observed ~ ., data = otus1, ntree = 500,
-                         na.action = na.omit, nrep = 500,num.cores = 6
-                        )
-plotImportance(richness_rfP)
-confusionMatrix(rp)
-
-names <- c("g__Corynebacterium", "g__Ruminococcaceae.UCG.014", "g__Cardiobacterium", "g__uncultured.Candidatus.Saccharibacteria.bacterium", "g__Tannerella", "g__Porphyromonas", "g__Prevotella.1", "g__Olsenella", "g__Acholeplasma")
-otus2 <- otus1[,names]
-otus2$FluA <- subset(s.data, group == "A" & variable %in% c("Observed"))$FluA
-otus3 <- melt(data.frame(otus2), id="FluA")
-ggplot(data=otus3 , aes( y = log10(FluA), x = value/200)) +
-    geom_point(alpha=0.6, color="black",size=2)+ 
-    geom_smooth(method=lm, size=2, color="black")+
-    facet_wrap(.~variable, scales = "free", nrow=3)+
-    theme_classic()+
-    theme(axis.text.x = element_text(size=14), axis.text.y = element_text(size=14)) +
-    theme(legend.title = element_blank())+ 
-    theme(title=element_text(size=11))+
-    theme(legend.position="none")+
-    stat_cor(method = "spearman", color= "black", size=6)
-
-```
-
-
-
-## beta diversity
-
-```{r}
-physeq.rp5<- subset_samples(physeq.rp, BMI != "NA")
+load('physeq.rp.Rdata')
+physeq.rp5<- subset_samples(physeq.rp, Gender != "NA")
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
-GP.ord <- ordinate(physeq5, "NMDS", "bray")
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
 data2 <- data1$data
-ggscatter(data2, x= "NMDS1", y = "NMDS2", 
-                color = "BMI", palette = c("black", "#aa3e35"),
-                ellipse = TRUE,  alpha=0.75,
-                mean.point = FALSE, star.plot = FALSE,  
-                ellipse.level = 0.3,  
-                ggtheme = theme_minimal(),
-                rug = FALSE)+
+ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "Gender", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
     theme(axis.title.x = element_text(size = 16,
                                       face = "bold", 
                                       vjust = 0.5, 
@@ -311,15 +99,53 @@ ggscatter(data2, x= "NMDS1", y = "NMDS2",
                                       face = "bold", 
                                       vjust = 0.5, 
                                       hjust = 0.5))+
-    theme_classic()
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
 
 meta <- as.data.frame(meta(physeq5))
 dis_bray.f<- phyloseq::distance(physeq5, "bray")
 set.seed(123)
-adon.results<-vegan::adonis2(dis_bray.f~ meta$BMI, perm=999)
-adon.results
+adonis2(dis_bray.f ~ meta$Gender, perm=999)
 
 
+
+physeq.rp5<- subset_samples(physeq.rp, group != "NA")
+physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
+meta <- meta(physeq5)
+meta$FluA[which(meta$FluA >0)] <- "pos."
+meta$FluB[which(meta$FluB >0)] <- "pos."
+meta$RSV[which(meta$RSV >0)] <- "pos."
+meta$RHV[which(meta$RHV >0)] <- "pos."
+meta$RHV[which(meta$RHV != "pos.")] <- "neg."
+meta$FluB[which(meta$FluB != "pos.")] <- "neg."
+meta$FluA[which(meta$FluA != "pos.")] <- "neg."
+meta$RSV[which(meta$RSV != "pos.")] <- "neg."
+sample_data(physeq5)$groups <- meta$RHV
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
+data1<- plot_ordination(physeq5, GP.ord, color="groups")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
+data2 <- data1$data
+ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "groups", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
+
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adonis2(dis_bray.f ~ meta$RHV, perm=999)
 
 
 col5<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
@@ -328,10 +154,11 @@ col5<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
 physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "A"))
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
-GP.ord <- ordinate(physeq5, "NMDS", "unifrac")
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
 data2 <- data1$data
-p1 <- ggscatter(data2, x= "NMDS1", y = "NMDS2", 
+p1 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
           color = "group", palette = c("#824533", "#2B6B8E"),
           ellipse = TRUE,  
           mean.point = FALSE, star.plot = FALSE,  
@@ -346,22 +173,23 @@ p1 <- ggscatter(data2, x= "NMDS1", y = "NMDS2",
                                       face = "bold", 
                                       vjust = 0.5, 
                                       hjust = 0.5))+
-    theme_classic()
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
 
 meta <- meta(physeq5)
-dis_bray.f<- phyloseq::distance(physeq5, "unifrac")
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
 set.seed(002)
-adon.results<-adonis(dis_bray.f~ meta$group, perm=999)
-knitr::kable(adon.results[["aov.tab"]])
+adonis2(dis_bray.f ~ meta$group, perm=999)
 
 #FluB
 physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "B"))
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
-GP.ord <- ordinate(physeq5, "NMDS", "unifrac")
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
 data2 <- data1$data
-p2 <- ggscatter(data2, x= "NMDS1", y = "NMDS2", 
+p2 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
           color = "group", palette = c("#B79570", "#2B6B8E"),
           ellipse = TRUE,  
           mean.point = FALSE, star.plot = FALSE,  
@@ -376,22 +204,23 @@ p2 <- ggscatter(data2, x= "NMDS1", y = "NMDS2",
                                       face = "bold", 
                                       vjust = 0.5, 
                                       hjust = 0.5))+
-    theme_classic()
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
 
 meta <- meta(physeq5)
-dis_bray.f<- phyloseq::distance(physeq5, "unifrac")
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
 set.seed(002)
-adon.results<-adonis(dis_bray.f~ meta$group, perm=999)
-knitr::kable(adon.results[["aov.tab"]])
+adonis2(dis_bray.f ~ meta$group, perm=999)
 
 #RSV
 physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "S"))
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
-GP.ord <- ordinate(physeq5, "NMDS", "unifrac")
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
 data2 <- data1$data
-p3 <- ggscatter(data2, x= "NMDS1", y = "NMDS2", 
+p3 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
           color = "group", palette = c("#2B6B8E", "#CAD09E"),
           ellipse = TRUE,  
           mean.point = FALSE, star.plot = FALSE,  
@@ -406,22 +235,23 @@ p3 <- ggscatter(data2, x= "NMDS1", y = "NMDS2",
                                       face = "bold", 
                                       vjust = 0.5, 
                                       hjust = 0.5))+
-    theme_classic()
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
 
 meta <- meta(physeq5)
-dis_bray.f<- phyloseq::distance(physeq5, "unifrac")
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
 set.seed(002)
-adon.results<-adonis(dis_bray.f~ meta$group, perm=999)
-knitr::kable(adon.results[["aov.tab"]])
+adonis2(dis_bray.f ~ meta$group, perm=999)
 
 # RHV
 physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "H"))
 physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
 
-GP.ord <- ordinate(physeq5, "NMDS", "unifrac")
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
 data1<- plot_ordination(physeq5, GP.ord, color="group")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
 data2 <- data1$data
-p4 <- ggscatter(data2, x= "NMDS1", y = "NMDS2", 
+p4 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
           color = "group", palette = c( "#2B6B8E", "#FFCCB1"),
           ellipse = TRUE,  
           mean.point = FALSE, star.plot = FALSE,  
@@ -436,13 +266,13 @@ p4 <- ggscatter(data2, x= "NMDS1", y = "NMDS2",
                                       face = "bold", 
                                       vjust = 0.5, 
                                       hjust = 0.5))+
-    theme_classic()
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
 
 meta <- meta(physeq5)
-dis_bray.f<- phyloseq::distance(physeq5, "unifrac")
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
 set.seed(002)
-adon.results<-adonis(dis_bray.f~ meta$group, perm=999)
-knitr::kable(adon.results[["aov.tab"]])
+adonis2(dis_bray.f ~ meta$group, perm=999)
 
 p1 | p2 | p3 | p4
 
@@ -450,68 +280,76 @@ p1 | p2 | p3 | p4
 
 
 
-## lefse
+## Figure 2B-E
 
 ```{r}
-physeq.rp5<- subset_samples(physeq.rp, group %in% c("CTL", "A", "B", "S", "H"))
-physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
-physeq.5rel <- transform_sample_counts(physeq5, function(x)x / sum(x))
-physeq5.genus = tax_glom(physeq.5rel, "genus")
-otus <- as.data.frame(t(physeq5.genus@otu_table@.Data))
-colnames(otus) <- as.data.frame(physeq5.genus@tax_table@.Data)$genus
-otus$group <- as.data.frame(meta(physeq5.genus))$group
-otus1 <- otus[,!colnames(otus) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+############################################################################
+## Figure 2B
+lefse <- read.csv("dat/Figure_2_lefse.csv",header = T, sep = ',', row.names = 1)
 
-# write.csv(otus1, file="genus.lefse.csv")
+lefse$genus <- rownames(lefse)
+p1 <- ggplot(lefse,aes(x = reorder(genus,flua.lda),y=flua.lda,
+              fill = flua.group,
+              label = flua.lda))+
+    geom_col(show.legend = FALSE) +
+    coord_flip() +
+    xlab('Gene Name') +
+    ggtitle('Expression level of significant changed genes')+
+    theme_clean()+
+    scale_fill_manual(values = c( "black", "#824533", "#2B6B8E"))+
+    labs(title= "FluA vs Health", x="", y="LDA score(log10)")
 
-library(ggthemes)
-ggplot(lefse,aes(x = reorder(genus,flua.lda),y=rhv.lda,
+p2 <- ggplot(lefse,aes(x = reorder(genus,flua.lda),y=flub.lda,
+              fill = flub.group,
+              label = flub.lda))+
+    geom_col(show.legend = FALSE) +
+    coord_flip() +
+    xlab('Gene Name') +
+    ggtitle('Expression level of significant changed genes')+
+    theme_clean()+
+    scale_fill_manual(values = c( "black", "#B79570", "#2B6B8E"))+
+    theme(axis.text.y = element_blank())+
+    labs(title= "FluB vs Health", x="", y="LDA score(log10)")
+
+p3 <- ggplot(lefse,aes(x = reorder(genus,flua.lda),y=rsv.lda,
+              fill = rsv.group,
+              label = rsv.lda))+
+    geom_col(show.legend = FALSE) +
+    coord_flip() +
+    xlab('Gene Name') +
+    ggtitle('Expression level of significant changed genes')+
+    theme_clean()+
+    scale_fill_manual(values = c( "black", "#2B6B8E", "#CAD09E"))+
+    theme(axis.text.y = element_blank())+
+    labs(title= "RSV vs Health", x="", y="LDA score(log10)")
+
+p4 <- ggplot(lefse,aes(x = reorder(genus,flua.lda),y=rhv.lda,
               fill = rhv.group,
               label = rhv.lda))+
     geom_col(show.legend = FALSE) +
     coord_flip() +
     xlab('Gene Name') +
     ggtitle('Expression level of significant changed genes')+
-    theme_clean()
+    theme_clean()+
+    scale_fill_manual(values = c( "black", "#2B6B8E", "#FFCCB1"))+
+    theme(axis.text.y = element_blank())+
+    labs(title= "HRV vs Health", x="", y="LDA score(log10)")
 
-data <- -lefse[,c(2,6,10,14)]
-data1 <- (data-min(data))/(max(data)-min(data))
-library(ggbiplot)
-wine.pca <- prcomp(data1, scale. = TRUE)
-ggbiplot(wine.pca, obs.scale = 1, var.scale = 1, ellipse = FALSE, circle = FALSE) +
-    scale_color_discrete(name = '') +
-    theme(legend.direction = 'horizontal', legend.position = 'top')+
-    theme_classic()+
-    geom_text_repel(aes(label=rownames(data1)))
+p1 | p2 | p3 | p4
 
+############################################################################
+## Figure 2C
 
 otus1$group <- factor(otus1$group,levels=c("A", "B", "S", "H", "CTL"))
 my_comparisons5 <- list(c("CTL", "H"), c("CTL", "S"), c("CTL", "B"), c("A", "CTL"))
 
-ggplot(data=otus1, aes(x = group, y = 100*g__Granulicatella, group=group)) +
+p1 <- ggplot(data=otus1, aes(x = group, y = 100*g__Veillonella, group=group)) +
     geom_boxplot(aes(x=group, fill=group), notch=FALSE, outlier.colour = "grey") +
     stat_summary(aes(x=group), fun.y=mean, geom="point", color="grey") +
     geom_jitter(width=0.2, size=1.5, alpha = 0.75) +
     scale_fill_manual(values=col5) +
     theme(title=element_text(size=12))+
-    #facet_wrap(.~variable, scales = "free", nrow=1)+
-    stat_compare_means(comparisons = my_comparisons5, paired = FALSE, color="black")+
-    theme_classic()+ 
-    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
-    theme(legend.title = element_blank())+ 
-    theme(legend.position='none')+
-    theme(plot.title = element_text(hjust = 0.5))+
-    labs(title= "Granulicatella", y="Realative Abundance", x="")+
-	    scale_y_continuous(limits=c(0,25), breaks=seq(0,25,5))
-
-ggplot(data=otus1, aes(x = group, y = 100*g__Veillonella, group=group)) +
-    geom_boxplot(aes(x=group, fill=group), notch=FALSE, outlier.colour = "grey") +
-    stat_summary(aes(x=group), fun.y=mean, geom="point", color="grey") +
-    geom_jitter(width=0.2, size=1.5, alpha = 0.75) +
-    scale_fill_manual(values=col5) +
-    theme(title=element_text(size=12))+
-    #facet_wrap(.~variable, scales = "free", nrow=1)+
+    stat_compare_means(paired = FALSE, color="black")+
     stat_compare_means(comparisons = my_comparisons5, paired = FALSE, color="black")+
     theme_classic()+ 
     theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
@@ -520,12 +358,48 @@ ggplot(data=otus1, aes(x = group, y = 100*g__Veillonella, group=group)) +
     theme(legend.position='none')+
     theme(plot.title = element_text(hjust = 0.5))+
     labs(title= "Veillonella", y="Realative Abundance", x="")
+p.bonferroni = c(0.013, 0.00036, 0.032, 0.0018)*4 
 
+
+############################################################################
+## Figure 2D
+
+p2 <- ggplot(data=otus1, aes(x = group, y = 100*g__Granulicatella, group=group)) +
+    geom_boxplot(aes(x=group, fill=group), notch=FALSE, outlier.colour = "grey") +
+    stat_summary(aes(x=group), fun.y=mean, geom="point", color="grey") +
+    geom_jitter(width=0.2, size=1.5, alpha = 0.75) +
+    scale_fill_manual(values=col5) +
+    theme(title=element_text(size=12))+
+    stat_compare_means(paired = FALSE, color="black")+
+    stat_compare_means(comparisons = my_comparisons5, paired = FALSE, color="black")+
+    theme_classic()+ 
+    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+    theme(legend.title = element_blank())+ 
+    theme(legend.position='none')+
+    theme(plot.title = element_text(hjust = 0.5))+
+    labs(title= "Granulicatella", y="Realative Abundance", x="")
+p.bonferroni <- c(0.054, 2e-5, 0.00232, 0.00058)*4 
+
+############################################################################
+## Figure 2E
+
+
+data <- -lefse[,c(2,6,10,14)]
+data1 <- (data-min(data))/(max(data)-min(data))
+colnames(data1) <- c("FluA", "FluB", "RSV", "HRV")
+library(ggbiplot)
+win.pca <- prcomp(data1, scale. = TRUE)
+ggbiplot(win.pca, obs.scale = 1, var.scale = 1, ellipse = FALSE, circle = FALSE) +
+    scale_color_discrete(name = '') +
+    theme(legend.direction = 'horizontal', legend.position = 'top')+
+    theme_classic()+
+    geom_text_repel(aes(label=rownames(data1)))
 
 ```
 
 
-## RF model
+## Figure 3A
 
 ```{r}
 library(pROC) 
@@ -536,28 +410,28 @@ library(glmnet)
 physeq.rpa<- subset_samples(physeq.rp, group %in% c("A", "B", "S", "H", "AB", "ABS", "AS", "BH", "BS", "CTL"))
 
 physeq.rpa<-  prune_taxa(taxa_sums(physeq.rpa) > 0, physeq.rpa)
-physeq10 = tax_glom(physeq.rpa, "genus")
+physeq10 = physeq.rpa
 
 physeq1 <- subset_samples(physeq10, group %in% c("A", "CTL"))
 data <- as.data.frame(t(physeq1@otu_table@.Data))
-colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- paste0(as.data.frame(physeq1@tax_table@.Data)$Taxon, colnames(data))
 colnames(data) <- make.names(colnames(data))
-data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+data1 <- data
 
 data1$group <- as.factor(as.data.frame(meta(physeq1))$group)
 set.seed(123)
 rf.fit<- randomForest(group ~ ., data = data1, importance = TRUE, )
 A <- plot.roc(data1$group, 
-         rf.fit$votes[,1], 
-         percent=TRUE,
-         xlab="False Positive Percentage", 
-         ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
+              rf.fit$votes[,1], 
+              percent=TRUE,
+              xlab="False Positive Percentage", 
+              ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
 
 physeq1 <- subset_samples(physeq10, group %in% c("B", "CTL"))
 data <- as.data.frame(t(physeq1@otu_table@.Data))
-colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- paste0(as.data.frame(physeq1@tax_table@.Data)$Taxon, colnames(data))
 colnames(data) <- make.names(colnames(data))
-data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+data1 <- data
 
 data1$group <- as.factor(as.data.frame(meta(physeq1))$group)
 set.seed(123)
@@ -570,9 +444,9 @@ B <- plot.roc(data1$group,
 
 physeq1 <- subset_samples(physeq10, group %in% c("S", "CTL"))
 data <- as.data.frame(t(physeq1@otu_table@.Data))
-colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- paste0(as.data.frame(physeq1@tax_table@.Data)$Taxon, colnames(data))
 colnames(data) <- make.names(colnames(data))
-data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+data1 <- data
 
 data1$group <- as.factor(as.data.frame(meta(physeq1))$group)
 set.seed(123)
@@ -585,9 +459,9 @@ S <- plot.roc(data1$group,
 
 physeq1 <- subset_samples(physeq10, group %in% c("H", "CTL"))
 data <- as.data.frame(t(physeq1@otu_table@.Data))
-colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- paste0(as.data.frame(physeq1@tax_table@.Data)$Taxon, colnames(data))
 colnames(data) <- make.names(colnames(data))
-data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+data1 <- data
 
 data1$group <- as.factor(as.data.frame(meta(physeq1))$group)
 set.seed(123)
@@ -600,9 +474,9 @@ H <- plot.roc(data1$group,
 
 physeq1 <- subset_samples(physeq10, group1 %in% c("infection", "control"))
 data <- as.data.frame(t(physeq1@otu_table@.Data))
-colnames(data) <- as.data.frame(physeq1@tax_table@.Data)$genus
+colnames(data) <- paste0(as.data.frame(physeq1@tax_table@.Data)$Taxon, colnames(data))
 colnames(data) <- make.names(colnames(data))
-data1 <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
+data1 <- data
 
 data1$group <- as.factor(as.data.frame(meta(physeq1))$group1)
 set.seed(123)
@@ -628,268 +502,457 @@ legend("bottomright",
        col=c("#95641f", "#c4934e", "#808000","#f2b77b","#054e61"),
        lty=1, lwd=2,bty = "n")
 
-
-data <- otu.train[,c(1,389:529)]
-smp.size = floor(0.7*nrow(data)) 
-set.seed(123456789)                     
-train.ind = sample(seq_len(nrow(data)), smp.size)
-train = data[train.ind, ] 
-test = data[-train.ind, ] 
-
-model = svm(formula = groups2 ~ ., data = train,type = 'C',kernel = "linear")
-train.pred = predict(model, train)
-test.pred = predict(model, test)
-
-table(real=train$groups2, predict=train.pred) 
-
-confus.matrix = table(real=train$groups2, predict=train.pred)
-sum(diag(confus.matrix))/sum(confus.matrix)
-
-## 测试集的混淆矩阵
-table(real=test$groups2, predict=test.pred)
-
-confus.matrix = table(real=test$groups2, predict=test.pred)
-sum(diag(confus.matrix))/sum(confus.matrix)
-
-
-
-# Health vs Infection
-physeq.rpa<- subset_samples(physeq.rp, group != "NA")
-physeq.rpa<-  prune_taxa(taxa_sums(physeq.rpa) > 0, physeq.rpa)
-physeq10 = tax_glom(physeq.rpa, "genus")
-data <- as.data.frame(t(physeq10@otu_table@.Data))
-colnames(data) <- as.data.frame(physeq10@tax_table@.Data)$genus
-colnames(data) <- make.names(colnames(data))
-data.g <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
-
-colnames(data) <- make.names(colnames(data))
-
-meta <- as.data.frame(meta(physeq.rpa))
-group1 <- subset(meta, group1 == "control")
-group2 <- subset(meta, group1 != "control")
-data1 <- data.g[rownames(group1),]
-data2 <- data.g[sample(rownames(group2), nrow(group1)),]
-data1$group <- "Health"
-data2$group <- "Infection"
-data.all <- rbind(data1, data2)
-data.all$group <- as.factor(data.all$group)
-
-set.seed(123)
-richness_rfP<- rfPermute(group ~ ., data = data.all, ntree = 500,
-                         na.action = na.omit, nrep = 100)
-roc <- roc(data.all$group, richness_rfP$rf$votes[,1], percent=TRUE)
-imp <- as.data.frame(importance(richness_rfP))
-imp1 <- imp[which(imp$MeanDecreaseAccuracy.pval < 0.05), c("MeanDecreaseAccuracy", "MeanDecreaseAccuracy.pval")]
-confu <- confusionMatrix(richness_rfP)
-
-## Single- vs co-
-physeq.rpa<- subset_samples(physeq.rp, group2 %in% c("co-infection", "infection"))
-physeq.rpa<-  prune_taxa(taxa_sums(physeq.rpa) > 0, physeq.rpa)
-physeq10 = tax_glom(physeq.rpa, "genus")
-data <- as.data.frame(t(physeq10@otu_table@.Data))
-colnames(data) <- as.data.frame(physeq10@tax_table@.Data)$genus
-colnames(data) <- make.names(colnames(data))
-data.g <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
-
-colnames(data.g) <- make.names(colnames(data.g))
-
-meta <- as.data.frame(meta(physeq10))
-group1 <- subset(meta, group2 == "A")
-group2 <- subset(meta, group2 != "A")
-data1 <- data.g[rownames(group1),]
-data2 <- data.g[sample(rownames(group2), nrow(group1)),]
-data1$group <- "co-infection"
-data2$group <- "Infection"
-data.all <- rbind(data1, data2)
-data.all$group <- as.factor(data.all$group)
-
-set.seed(123)
-richness_rfP<- rfPermute(group ~ ., data = data.all, ntree = 500,
-                         na.action = na.omit, nrep = 100)
-roc <- roc(data.all$group, richness_rfP$rf$votes[,1], percent=TRUE)
-imp <- as.data.frame(importance(richness_rfP))
-imp1 <- imp[which(imp$MeanDecreaseAccuracy.pval < 0.05), c("MeanDecreaseAccuracy", "MeanDecreaseAccuracy.pval")]
-confu <- confusionMatrix(richness_rfP)
-
-## A B S H in single
-#   A   AB  ABH  ABS ABSH   AH   AS    B   BH   BS  BSH  CTL    H    S   SH 
-#  22   16    4   12    2    3   13  138   22   16    3   98   61   34    3 
-
-physeq.rpa<- subset_samples(physeq.rp, group != "NA")
-physeq.rpa<-  prune_taxa(taxa_sums(physeq.rpa) > 0, physeq.rpa)
-#physeq10 = tax_glom(physeq.rpa, "genus")
-data <- as.data.frame(t(physeq10@otu_table@.Data))
-#colnames(data) <- as.data.frame(physeq10@tax_table@.Data)$genus
-#colnames(data) <- make.names(colnames(data))
-#data.g <- data[,!colnames(data) %in% c("g__uncultured", "g__uncultured bacterium", "g__uncultured rumen bacterium","g__uncultured forest soil bacterium" ,"g__hydrothermal vent metagenome" ,"g__uncultured soil bacterium" ,"g__uncultured compost bacterium" ,"g__unidentified")]
-
-colnames(data) <- make.names(colnames(data))
-meta <- as.data.frame(meta(physeq.rpa))
-
-#FluA
-library(tidyverse)
-library("randomForest")
-library("rfUtilities")
-library("rfPermute")
-
-group1 <- subset(meta, group == "A")
-group2 <- subset(meta, group == "CTL")
-data1 <- data.g[rownames(group1),]
-data2 <- data.g[sample(rownames(group2), nrow(group1)),]
-data1$group <- "A"
-data2$group <- "CTL"
-data.all <- rbind(data1, data2)
-data.all$group <- as.factor(data.all$group)
-
-set.seed(123)
-richness_rfP<- rfPermute(group ~ ., data = data.all, ntree = 500,
-                         na.action = na.omit, nrep = 100, num.cores = 6)
-roc <- roc(data.all$group, richness_rfP$rf$votes[,1], percent=TRUE)
-imp <- as.data.frame(importance(richness_rfP))
-imp1 <- imp[which(imp$MeanDecreaseAccuracy.pval < 0.05), c("MeanDecreaseAccuracy", "MeanDecreaseAccuracy.pval")]
-confu <- confusionMatrix(richness_rfP)
-
-# FluB
-group1 <- subset(meta, group == "B")
-group2 <- subset(meta, group != "B")
-data1 <- data.g[rownames(group2),]
-data2 <- data.g[sample(rownames(group1), nrow(group2)),]
-data2$group <- "FluB"
-data1$group <- "Others"
-data.all <- rbind(data1, data2)
-data.all$group <- as.factor(data.all$group)
-
-set.seed(123)
-richness_rfP<- rfPermute(group ~ ., data = data.all, ntree = 500,
-                         na.action = na.omit, nrep = 100)
-roc <- roc(data.all$group, richness_rfP$rf$votes[,1], percent=TRUE)
-imp <- as.data.frame(importance(richness_rfP))
-imp1 <- imp[which(imp$MeanDecreaseAccuracy.pval < 0.05), c("MeanDecreaseAccuracy", "MeanDecreaseAccuracy.pval")]
-confu <- confusionMatrix(richness_rfP)
-
-# RSV
-group1 <- subset(meta, group == "S")
-group2 <- subset(meta, group != "S")
-data1 <- data.g[rownames(group1),]
-data2 <- data.g[sample(rownames(group2), nrow(group1)),]
-data1$group <- "RSV"
-data2$group <- "Others"
-data.all <- rbind(data1, data2)
-data.all$group <- as.factor(data.all$group)
-
-set.seed(123)
-richness_rfP<- rfPermute(group ~ ., data = data.all, ntree = 500,
-                         na.action = na.omit, nrep = 100)
-roc <- roc(data.all$group, richness_rfP$rf$votes[,1], percent=TRUE)
-imp <- as.data.frame(importance(richness_rfP))
-imp1 <- imp[which(imp$MeanDecreaseAccuracy.pval < 0.05), c("MeanDecreaseAccuracy", "MeanDecreaseAccuracy.pval")]
-confu <- confusionMatrix(richness_rfP)
-
-# RHV
-group1 <- subset(meta, group == "H")
-group2 <- subset(meta, group != "H")
-data1 <- data.g[rownames(group1),]
-data2 <- data.g[sample(rownames(group2), nrow(group1)),]
-data1$group <- "RHV"
-data2$group <- "Others"
-data.all <- rbind(data1, data2)
-data.all$group <- as.factor(data.all$group)
-
-set.seed(123)
-richness_rfP<- rfPermute(group ~ ., data = data.all, ntree = 500,
-                         na.action = na.omit, nrep = 100)
-roc <- roc(data.all$group, richness_rfP$rf$votes[,1], percent=TRUE)
-imp <- as.data.frame(importance(richness_rfP))
-imp1 <- imp[which(imp$MeanDecreaseAccuracy.pval < 0.05), c("MeanDecreaseAccuracy", "MeanDecreaseAccuracy.pval")]
-confu <- confusionMatrix(richness_rfP)
-
-
-library(tidyverse)
-library(reshape2)
-
-roc <- read.csv("C:/Users/DELL/Desktop/URTI.16SV4.202110/fig/FIG3/roc.csv",header = T, sep = ',', row.names = 1)
-roc1 <- melt(roc)
-data_m_sd_mean <- roc1 %>% group_by(variable) %>% dplyr::summarise(sd=sd(value), value=mean(value))
-data_m_sd_mean <- as.data.frame(data_m_sd_mean)
-data_m_sd_mean$variable <- factor(data_m_sd_mean$variable,levels=c("A", "B", "S", "H", "CTL"))
-
-col12<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
-ggplot(data_m_sd_mean, aes(x=variable, y=value)) + 
-    geom_bar(stat="identity", aes(fill=variable)) +
-    scale_fill_manual(values=col12) +
-    geom_errorbar(aes(ymin=value-sd, ymax=value+sd), width=0.2, position=position_dodge(width=0.75)) +
-    theme_classic()
-
-imp <- read.csv("C:/Users/DELL/Desktop/URTI.16SV4.202110/fig/FIG3/imp.csv",header = T, sep = ',')
-data <- as.data.frame(aggregate(imp$out_id, by=list(type=imp$Group_type,imp$out_id),length))
-data.50 <- subset(data, x >= 50)
-tax <- physeq.rpa@tax_table@.Data
-tax1 <- tax[data.50$Group.2[!duplicated(data.50$Group.2)], ]
-data2 <- subset(data, Group.2 %in% data.50$Group.2)
-data3 <- dcast(data2, type ~ Group.2)
-rownames(data3) <- data3$type
-data3 <- data3[c("A", "B", "S", "H", "CTL"),-1]
-colnames(data3) <- paste(as.data.frame(tax[colnames(data3),])$Taxon, colnames(data3))
-data3 <- data3[,colnames(data3)[order(colnames(data3))]]
-pheatmap::pheatmap(t(data3),cluster_rows = FALSE,  cluster_cols = FALSE)
-
-# plotImportance(richness_rfP)
-
-# plotConfMat(richness_rfP)
-
- plot.roc(data.all$group, 
-         richness_rfP$rf$votes[,1], 
-         percent=TRUE,
-         xlab="False Positive Percentage", 
-         ylab="True Postive Percentage", col="#377eb8", lwd=4, print.auc=TRUE)
 ```
 
 
+## Figure 3B-C
 
-## growth rate of microbiota
+```{r}
+#######################################################################
+## Figure 3B
+
+roc <- read.csv("dat/Figure_3_roc.csv",header = T, sep = ',', row.names = 1)
+roc1 <- melt(roc)
+col12<- c("#824533", "#B79570","#CAD09E", "#FFCCB1", "#2B6B8E")
+ggplot(roc1, aes(x=variable, y=value, fill=variable)) +
+    geom_bar(stat="summary", fun=mean, position="dodge") +
+    stat_summary(geom = "errorbar",fun.data = 'mean_sd', width = 0.3)+
+    scale_fill_manual(values=col12) +
+    theme_classic()+
+    geom_jitter(data = roc1,  aes(x=variable, y=value), width=0.2, size=1.5, alpha = 0.75)+
+    coord_cartesian( ylim = c(60, 100))+
+    labs( y="AUC", x="")
+
+
+#######################################################################
+## Figure 3C
+
+imp <- read.csv("dat/Figure_3_imp.csv",header = T, sep = ',')
+data <- as.data.frame(aggregate(imp$MeanDecreaseAccuracy, by=list(type=imp$Group_type,imp$MeanDecreaseAccuracy), mean))
+
+ss <- subset(imp, out_id %in% tax1)
+tax <- physeq.rpa@tax_table@.Data
+ss$taxon <- as.data.frame(tax[ss$out_id,])$Taxon
+ss$phylum <- as.data.frame(tax[ss$out_id,])$phylum
+
+ss$out_id <- factor(ss$out_id,levels=rev(tax1))
+ss$Group_type <- factor(ss$Group_type,levels= c("A", "B", "S", "H", "CTL"))
+ggplot(ss, aes(y=out_id, x=MeanDecreaseAccuracy)) +
+    geom_bar(stat="summary", fun=mean, position="dodge") +
+    stat_summary(geom = "errorbar",fun.data = 'mean_sd', width = 0.2)+
+    theme_classic2()+
+    geom_jitter(width=0.03, size=1, alpha = 0.3)+
+    labs( y="Taxon", x="")+
+    facet_grid(.~Group_type)+
+    scale_y_discrete(labels = rev(as.data.frame(tax[tax1,])$Taxon)) 
+
+```
+
+
+## Figure 4A
+
+```{r}
+s.sh <- plot_richness(physeq.rp, "group",  measures=NULL)
+s.data <- s.sh$data
+
+s.data$BMI[which(s.data$BMI > 21.22)] = "BMI > 21.22"
+s.data$BMI[which(s.data$BMI <= 21.22)] = "BMI ≤ 21.22"
+s.data$Age[which(s.data$Age > 29)] = "Age > 29"
+s.data$Age[which(s.data$Age < 9)] = "Age ≤ 29"
+s.data$Age[which(s.data$Age <= 29)] = "Age ≤ 29"
+s.data$FluA[which(s.data$FluA > 0)] = "FluA pos."
+s.data$FluA[which(s.data$FluA == "0")] = "FluA neg"
+s.data$FluB[which(s.data$FluB > 0)] = "FluB pos."
+s.data$FluB[which(s.data$FluB == "0")] = "FluB neg"
+s.data$RSV[which(s.data$RSV > 0)] = "RSV pos."
+s.data$RSV[which(s.data$RSV == "0")] = "RSV neg"
+s.data$RHV[which(s.data$RHV > 0)] = "HRV pos."
+s.data$RHV[which(s.data$RHV == "0")] = "HRV neg"
+s.data1 <- subset(s.data, variable %in% c("Shannon"))
+dat <- melt(s.data1[,c(1:7,9,13)], measure.vars = colnames(s.data1[,c(1:7,9)]))
+
+colnames(dat) <- c("value", "type", "group")
+dat$type <- factor(dat$type, levels = c("Gender", "Age", "BMI", "FluA", "FluB", "RSV", "RHV", "group1"))
+ggviolin(dat, "group", "value", fill = "group",
+         add = "boxplot", add.params = list(fill = "white"))+
+    facet_wrap(.~type, scales = "free", nrow=1)+
+    theme_classic()+ 
+    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+    theme(legend.title = element_blank())+ 
+    theme(legend.position='none')+
+    theme(plot.title = element_text(hjust = 0.5))
+
+compare_means(value~group, subset(dat, type == "Gender"))
+compare_means(value~group, subset(dat, type == "Age"))
+compare_means(value~group, subset(dat, type == "BMI"))
+compare_means(value~group, subset(dat, type == "FluA"))
+compare_means(value~group, subset(dat, type == "FluB"))
+compare_means(value~group, subset(dat, type == "RSV"))
+compare_means(value~group, subset(dat, type == "RHV"))
+compare_means(value~group, subset(dat, type == "group1"))
+
+```
+
+
+## Figure 4B & Figure S3
+
+```{r}
+physeq.rp5<- subset_samples(physeq.rp, Gender != "NA")
+physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
+
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
+data1<- plot_ordination(physeq5, GP.ord, color="group")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
+data2 <- data1$data
+p1 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "Gender", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
+
+meta <- as.data.frame(meta(physeq5))
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adonis2(dis_bray.f ~ meta$Gender, perm=999)
+
+
+physeq.rp5<- subset_samples(physeq.rp, Age != "NA")
+physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
+meta <- meta(physeq5)
+meta$Age[which(meta$Age > 29)] = "Age > 29"
+meta$Age[which(meta$Age < 9)] = "Age ≤ 29"
+meta$Age[which(meta$Age <= 29)] = "Age ≤ 29"
+sample_data(physeq5)$Age <- meta$Age
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
+data1<- plot_ordination(physeq5, GP.ord, color="groups")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
+data2 <- data1$data
+p2 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "Age", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
+
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adonis2(dis_bray.f ~  meta$Age, perm=999)
+
+
+physeq.rp5<- subset_samples(physeq.rp, BMI != "NA")
+physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
+meta <- meta(physeq5)
+meta$BMI[which(meta$BMI > 21.22)] = "BMI > 21.22"
+meta$BMI[which(meta$BMI <= 21.22)] = "BMI ≤ 21.22"
+sample_data(physeq5)$BMI <- meta$BMI
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
+data1<- plot_ordination(physeq5, GP.ord, color="groups")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
+data2 <- data1$data
+p3 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "BMI", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
+
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adonis2(dis_bray.f ~  meta$BMI, perm=999)
+
+
+physeq.rp5<- subset_samples(physeq.rp, group != "NA")
+physeq5<-  prune_taxa(taxa_sums(physeq.rp5) > 0, physeq.rp5)
+meta <- meta(physeq5)
+meta$FluA[which(meta$FluA >0)] <- "pos."
+meta$FluB[which(meta$FluB >0)] <- "pos."
+meta$RSV[which(meta$RSV >0)] <- "pos."
+meta$RHV[which(meta$RHV >0)] <- "pos."
+meta$RHV[which(meta$RHV != "pos.")] <- "neg."
+meta$FluB[which(meta$FluB != "pos.")] <- "neg."
+meta$FluA[which(meta$FluA != "pos.")] <- "neg."
+meta$RSV[which(meta$RSV != "pos.")] <- "neg."
+
+sample_data(physeq5)$groups <- meta$FluA
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
+data1<- plot_ordination(physeq5, GP.ord, color="groups")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
+data2 <- data1$data
+p5 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "groups", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
+
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adonis2(dis_bray.f ~ meta$FluA, perm=999)
+
+
+sample_data(physeq5)$groups <- meta$FluB
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
+data1<- plot_ordination(physeq5, GP.ord, color="groups")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
+data2 <- data1$data
+p6 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "groups", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
+
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adonis2(dis_bray.f ~ meta$FluB, perm=999)
+
+sample_data(physeq5)$groups <- meta$RSV
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
+data1<- plot_ordination(physeq5, GP.ord, color="groups")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
+data2 <- data1$data
+p7 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "groups", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
+
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adonis2(dis_bray.f ~ meta$RSV, perm=999)
+
+sample_data(physeq5)$groups <- meta$RHV
+GP.ord <- ordinate(physeq5, "PCoA", "bray")
+data1<- plot_ordination(physeq5, GP.ord, color="groups")
+c(data1[["labels"]][["x"]], data1[["labels"]][["y"]])
+data2 <- data1$data
+p8 <- ggscatter(data2, x= "Axis.1", y = "Axis.2", 
+          color = "groups", palette = c("black", "#aa3e35"),
+          ellipse = TRUE,  alpha=0.75,
+          mean.point = FALSE, star.plot = FALSE,  
+          ellipse.level = 0.3,  
+          ggtheme = theme_minimal(),
+          rug = FALSE)+
+    theme(axis.title.x = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme(axis.title.y = element_text(size = 16,
+                                      face = "bold", 
+                                      vjust = 0.5, 
+                                      hjust = 0.5))+
+    theme_classic()+
+    xlab(data1[["labels"]][["x"]]) + ylab(data1[["labels"]][["y"]])
+
+dis_bray.f<- phyloseq::distance(physeq5, "bray")
+set.seed(123)
+adonis2(dis_bray.f ~ meta$RHV, perm=999)
+
+(p1 |p2 | p3)/ (p4 |p5 | p6)
+(p7 | p8 )
+
+```
+
+
+## Figure 4C
+
+The source data for importing Cytoscape and the Cytoscape output files are named "Figure 4C.csv" and "Figure 5C.cys"respectively in "dat" file.
+
+## Figure S4-5
 
 ```{r}
 
-grid <- read.csv("C:/Users/DELL/Desktop/URTI.16SV4.202110/fig/FIG5/grid.csv",header = T, sep = ',')
+fs45 <- read.csv("dat/Figure_s4_5.csv",header = T, sep = ',')
+
+my_comparisons <- list(c("FluA", "Health"), c("FluB", "Health"), c("FluAB", "Health"))
+fs45$group <- factor(fs45$group, levels = c("FluA", "FluB", "FluAB", "Health"))
+ggplot(data=fs45, aes(x = group, y = arg, group=group)) +
+    geom_boxplot(aes(x=group, fill=group), notch=FALSE, outlier.colour = "grey") +
+    stat_summary(aes(x=group), fun.y=mean, geom="point", color="grey") +
+    geom_jitter(width=0.2, size=1.5, alpha = 0.75) +
+    scale_fill_manual(values= c("#824533", "#b79570", "#161645", "#2b6b8e")) +
+    theme(title=element_text(size=12))+
+    stat_compare_means(paired = FALSE, color="black")+
+    stat_compare_means(comparisons = my_comparisons, paired = FALSE, color="black")+
+    theme_classic()+ 
+    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+    theme(legend.title = element_blank())+ 
+    theme(legend.position='none')+
+    theme(plot.title = element_text(hjust = 0.5))+
+    labs(title= "", y="ARGs counts", x="")
 
 
-# names = c("Actinomyces graevenitzii","Capnocytophaga ochracea", "Fusobacterium nucleatum", "Haemophilus sputorum", "Neisseria flavescens", "Parvimonas micra", "Prevotella intermedia", "Prevotella sp oral taxon 306", "Prevotella oris", "Rothia aeria", "Rothia mucilaginosa", "Streptococcus infantis", "Streptococcus cristatus", "Streptococcus mitis oralis pneumoniae", "Streptococcus sp SK140", "Treponema medium")
+ggplot(data=fs45, aes(x = group, y = all, group=group)) +
+    geom_boxplot(aes(x=group, fill=group), notch=FALSE, outlier.colour = "grey") +
+    stat_summary(aes(x=group), fun.y=mean, geom="point", color="grey") +
+    geom_jitter(width=0.2, size=1.5, alpha = 0.75) +
+    scale_fill_manual(values= c("#824533", "#b79570", "#161645", "#2b6b8e")) +
+    theme(title=element_text(size=12))+
+    stat_compare_means(paired = FALSE, color="black")+
+    stat_compare_means(comparisons = my_comparisons, paired = FALSE, color="black")+
+    theme_classic()+ 
+    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) + 
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
+    theme(legend.title = element_blank())+ 
+    theme(legend.position='none')+
+    theme(plot.title = element_text(hjust = 0.5))+
+    labs(title= "", y="Realative Abundance (%)", x="")
 
-col5<- c("#824533", "#FFCCB1", "#B79570", "#2B6B8E")
+
+
+```
+
+
+## Figure 5A-C
+
+```{r}
+########################################################################
+## Figure 5A
+
+
+grid <- read.csv("dat/Figure_5_grid.csv",header = T, sep = ',')
 
 names1 <- c("Streptococcus pneumoniae", "Mycoplasma pneumoniae", "Haemophilus influenzae", "Klebsiella pneumoniae", "Pseudomonas aeruginosa", "Staphylococcus aureus", "Chlamydia pneumoniae", "Legionella pneumophila", "Escherichia coli", "Treponema denticola", "Porphyromonas gingivalis", "Haemophilus sputorum","Staphylococcus epidermidis", "Fusobacterium nucleatum", "Treponema medium")
 
+
+
+grid$species[which(grid$species %in% names1)] = "Pathogens"
+grid$species[which(grid$species != "Pathogens")] = "Commesals"
+grid$groups <- paste(grid$group, grid$species)
+grid$GRiD[which(grid$GRiD > 5)]  = 5
+
+grid$groups <- factor(grid$groups, levels = c("FluA Pathogens", "FluA Commesals", "FluB Pathogens", "FluB Commesals", "FluAB Pathogens", "FluAB Commesals", "Health Pathogens", "Health Commesals"))
+my_comparisons <- list(c("FluA Pathogens", "FluA Commesals"), c("FluB Pathogens", "FluB Commesals"), c("FluAB Pathogens", "FluAB Commesals"), c("Health Pathogens", "Health Commesals"), c("FluA Pathogens", "Health Pathogens"), c("FluB Pathogens", "Health Pathogens"), c("FluAB Pathogens", "Health Pathogens"))
+
+ggplot(grid, aes(y=GRiD, x=groups)) +
+    geom_jitter(aes(color = groups), width=0.2, size=1, alpha = 0.9)+
+    geom_bar(stat="summary", fun=mean, position="dodge", fill = NA, color = "black") +
+    stat_summary(geom = "errorbar",fun.data = 'mean_sd', width = 0.2)+
+    theme_classic2()+
+    scale_color_manual(values= c("#824533", "grey", "#b79570", "grey", "#161645", "grey", "#2b6b8e", "grey"))+
+    labs( y="Bacterial growth rate", x="")+
+    stat_compare_means(comparisons = my_comparisons, paired = FALSE, color="black")+ 
+    theme(legend.position='none')+ theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+#########################################################################
+## Figure 5B
+
+library(psych)
+library(corrplot)
+
+grid <- read.csv("dat/Figure_5_grid.csv",header = T, sep = ',')
 data1 <- subset(grid, species %in% names1)
-data2 <- subset(grid, species %in% grid$species[-which(grid$species %in% names1)])
-
-data1$group <- factor(data1$group,levels=c("FluA", "FluB", "FluAB", "Health"))
-my_comparisons2 <- list(c("Health", "FluA"), c("Health", "FluB"), c("Health", "FluAB"))
-
-ggplot(data=data1, aes(x = group, y = GRiD_unrefined, group=group)) +
-    geom_boxplot(aes(x=group, fill=group), notch=FALSE, outlier.colour = "grey") +
-    stat_summary(aes(x=group), fun.y=mean, geom="point", color="grey") +
-    geom_jitter(aes(color=species), width=0.2, size=1.5, alpha = 0.75) +
-    scale_fill_manual(values=col5) +
-    theme(title=element_text(size=14,color="#4F4F4F"))+
-    stat_compare_means(comparisons = my_comparisons2, paired = FALSE, color="black")+
-    theme_classic()+ 
-    theme(axis.text.x = element_text(size=14),axis.text.y = element_text(size=14)) +
-    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) + 
-    theme(legend.title = element_blank())+
-    theme(plot.title = element_text(hjust = 0.5))
 
 sp <- data1$species[!duplicated(data1$species)]
 
-species <- read.csv("C:/Users/DELL/Desktop/URTI.16SV4.202110/fig/FIG5/species.csv",header = T, sep = ',', row.names = 1)
+species <- read.csv("dat/Figure_5_species.csv",header = T, sep = ',', row.names = 1)
 
-sp1 <- species["Treponema denticola", data1$id[which(data1$species == "Treponema denticola" )]]
+data1 <- subset(grid, species %in% names1)
+data2 <- grid[-c(which(grid$species %in% names1)),]
+test1 <- dcast(data1,id~data1$species,value.var = 'GRiD')
+rownames(test1) <- test1$id
+test1 <- test1[,-1]
+test1 =  test1[, apply(test1, 2, function(y) length(na.omit(y))>5)]
+test2 <- dcast(data2,id~data2$species,value.var = 'GRiD')
+rownames(test2) <- test2$id
+test2 <- test2[,-1]
+test2 =  test2[, apply(test2, 2, function(y) length(na.omit(y))>5)]
+
+cor <- corr.test(test1, test2)
+r <- cor$r
+p <- cor$p
+
+r[p > 0.05] = 0
+r1 <- r[, which(colSums(abs(r)) > 0)]
+
+
+col3 <- colorRampPalette(c("blue", "white", "red"))
+corrplot(r1,col=col3(20),method='color',tl.pos='lt', tl.col='black', sig.level=c(.001, .01, .05), pch.cex= .9, pch.col='black', xpd = T, tl.srt = 45)
+
+
+########################################################################
+## Figure 5C
+
 
 data1 <- subset(grid, species %in% sp)
-grid1 <- data1[, c(3,9,5)]
+grid1 <- data1[, c(3,8,4)]
 widedata2 <- dcast(grid1, id~species )
 rownames(widedata2) <- widedata2$id
 widedata2 <- widedata2[,-1]
-path <- read.csv("C:/Users/DELL/Desktop/URTI.16SV4.202110/fig/FIG5/virulence.csv",header = T, sep = ',', row.names = 1)
+
+path <- read.csv("dat/Figure_5_pathways.csv",header = T, sep = ',', row.names = 1)
 
 path <- as.data.frame(t(path))
 widedata2 <- widedata2[rownames(path),]
@@ -902,31 +965,5 @@ p <- cor$p
 r[p > 0.05 | abs(r) < 0.5] = 0
 r1 <- r[, which(colSums(abs(r)) > 0)]
 
-col3 <- colorRampPalette(c("blue", "white", "red"))
-corrplot(r1,col=col3(20),method='color',tl.pos='lt', tl.col='black', sig.level=c(.001, .01, .05), pch.cex= .9, pch.col='black', xpd = T, tl.srt = 45)
-
-data1 <- subset(grid, species %in% names1)
-data2 <- grid[-c(which(grid$species %in% names1)),]
-test1 <- dcast(data1,id~data1$species,value.var = 'GRiD_unrefined')
-rownames(test1) <- test1$id
-test1 <- test1[,-1]
-test1 =  test1[, apply(test1, 2, function(y) length(na.omit(y))>5)]
-test2 <- dcast(data2,id~data2$species,value.var = 'GRiD_unrefined')
-rownames(test2) <- test2$id
-test2 <- test2[,-1]
-test2 =  test2[, apply(test2, 2, function(y) length(na.omit(y))>5)]
-
-cor <- corr.test(test1, test2, method = "spearman")
-r <- cor$r
-p <- cor$p
-
-pheatmap(r, cluster_rows=T, cluster_cols=T)
-
-r[p > 0.05] = 0
-r1 <- r[, which(colSums(abs(r)) > 0)]
-
-
-col3 <- colorRampPalette(c("blue", "white", "red"))
-corrplot(r1,col=col3(20),method='color',tl.pos='lt', tl.col='black', sig.level=c(.001, .01, .05), pch.cex= .9, pch.col='black', xpd = T, tl.srt = 45)
-
+##  The correlation data was used to imported to Cytoscape, and the Cytoscape output file is "Figure 5C.cys" in "dat" file.
 ```
